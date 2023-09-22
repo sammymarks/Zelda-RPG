@@ -3,10 +3,8 @@ Link is lost! Can Zelda find him?
 
 ## Notes for Instructors
 - Wireframe is linked here - https://www.figma.com/file/geqIZi5mkhqDo2gb4dLLIH/Project1-Zelda-RPG?type=design&node-id=0%3A1&mode=design&t=LrtLseEgFMMQfqJ7-1
-- I successfully pulled an API , but am not sure how to navigate into the objects/arrays when there is a "promise pending" in the conosle:
-![Promise Pending Console Log](image.png)
 - Expected challenges:
-  - This has a lot of requirements... I may have to scale back MVP 
+  - This has a lot of requirements... I may have to scale back MVP (see: prototype release in BuildPlan.md)
   - Styling is hard, and I want to do this right!
 
 ## Game Play
