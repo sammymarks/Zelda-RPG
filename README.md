@@ -5,6 +5,9 @@ Link is lost! Can Zelda find him?
 - Wireframe is linked here - https://www.figma.com/file/geqIZi5mkhqDo2gb4dLLIH/Project1-Zelda-RPG?type=design&node-id=0%3A1&mode=design&t=LrtLseEgFMMQfqJ7-1
 - I successfully pulled an API , but am not sure how to navigate into the objects/arrays when there is a "promise pending" in the conosle:
 ![Promise Pending Console Log](image.png)
+- Expected challenges:
+  - This has a lot of requirements... I may have to scale back MVP 
+  - Styling is hard, and I want to do this right!
 
 ## Game Play
 - Turn based "RPG" where Zelda (main character) moves across a grid collecting items and fighting enemies until she finds Link
