@@ -18,12 +18,21 @@
   - Combat (including multi-combat)
   - Turn Count
 - QA/Success Criteria
-  - Valid turn over - Player -> Monster
+  - Valid turn order - Player -> Monster
   - Valid movement - Player
     - Player moves from keyboard/mouse
     - Cannot exit grid
-    - Movement limited to 
-  - Player moves to sword
+    - Movement limited to one square up/down/left/right
+  - Valid movement - Monster
+    - Random Movement
+    - Cannot exit grid
+    - Movement limited to one square up/down/left/right
+  - Player moves to sword location
+    - Sword Disappears
+    - Player Attack Stats are increased by sword attack value
+  - Valid Combat
+    - Attacker initiates
+    - Combat repeats until character health is <1
 
 # R2 Additional Mechanics
 - Single/fixed stats objects
