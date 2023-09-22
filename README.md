@@ -126,8 +126,9 @@ Game Over
 
 ### Visuals
 - Element templates for player, monsters, items
-- Grid
-- Player Stats
+- Gameboard (grid)
+- Page Layout (grid)
+- Player Status (grid)
 - Combat Resolution game status
 - Item Pickup game status
 - Monster Appear game status (including name, attack, and defence)
