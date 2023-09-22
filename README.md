@@ -1,6 +1,11 @@
 # Zelda-RPG
 Link is lost! Can Zelda find him? 
 
+## Notes for Instructors
+- Wireframe is linked here - https://www.figma.com/file/geqIZi5mkhqDo2gb4dLLIH/Project1-Zelda-RPG?type=design&node-id=0%3A1&mode=design&t=LrtLseEgFMMQfqJ7-1
+- I successfully pulled an API , but am not sure how to navigate into the objects/arrays when there is a "promise pending" in the conosle:
+![Promise Pending Console Log](image.png)
+
 ## Game Play
 - Turn based "RPG" where Zelda (main character) moves across a grid collecting items and fighting enemies until she finds Link
 - Zelda's turn: movememt up, down, or sideways by one square (controlled by keyboard or click on square) and automatic "collection" of items on the square
