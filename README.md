@@ -5,6 +5,7 @@ Link is lost! Can Zelda find him?
 - Wireframe is linked here - https://www.figma.com/file/geqIZi5mkhqDo2gb4dLLIH/Project1-Zelda-RPG?type=design&node-id=0%3A1&mode=design&t=LrtLseEgFMMQfqJ7-1
 - Expected challenges:
   - This has a lot of requirements... I may have to scale back MVP (see: prototype release in BuildPlan.md)
+  - A lot of moving pieces (literally and figuratively) need a scalable way to manage asset and element names/classes/ids
   - Styling is hard, and I want to do this right!
 
 ## Game Play
