@@ -1,12 +1,17 @@
 # Zelda-RPG
 Link is lost! Can Zelda find him? 
 
+This is a turn-based RPG on a grid with similar movement and item consumption as Chips Challege (https://youtu.be/ksT5z2gqPfw?feature=shared).
+Zelda must survive through (X) turns, picking up equipment and health and fighting monsters until she finds Link
+Spoiler alert - Link is probably cooking dubious food...
+
 ## Notes for Instructors
 - Wireframe is linked here - https://www.figma.com/file/geqIZi5mkhqDo2gb4dLLIH/Project1-Zelda-RPG?type=design&node-id=0%3A1&mode=design&t=LrtLseEgFMMQfqJ7-1
 - Expected challenges:
   - This has a lot of requirements... I may have to scale back MVP (see: prototype release in BuildPlan.md)
   - A lot of moving pieces (literally and figuratively) need a scalable way to manage asset and element names/classes/ids
   - Styling is hard, and I want to do this right!
+  - API data set is not great - may need to hand-pick a subset of objects manually OR commit to randomness that takes away from "immersion"
 
 ## Game Play
 - Turn based "RPG" where Zelda (main character) moves across a grid collecting items and fighting enemies until she finds Link
