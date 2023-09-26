@@ -18,3 +18,23 @@
 //   //Update HTML
 //    document.getElementById(`${monster1.row}${monster1.col}`).innerHTML = monster1.nam
 // }
+
+
+
+9/25 Standup Notes
+So far...
+- Built out gameboard
+- Built out logic to have player move every turn (single space, within boarders) 
+- Built out logic to have monster move every other turn (single space, within boarders) 
+- Used API to create "databases" of
+
+9/26 Standup Notes...
+- Issues
+    - Git sync - forking issues, don't want to lose work
+    - How do you run an async function completely before the rest of the code runs?
+- For today
+    - Finalize/test V1 game logic, gameplay via console
+    - Create initial UI, including title, gameboard, turn status, player stats, and new game button
+- Remainder of the week
+    - CSS cleanup
+    

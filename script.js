@@ -168,7 +168,7 @@ const pullAPI = async () => {
     {name: `Yiga Footsoldier`, health: 69},
   ]
 
-  //Update monster health in monstersArray, remove monster if no health
+  //Update monster atk, def, lif in monstersArray, remove monster if no health match
   for (let i=0; i<monstersArray.length; i++) {
     let match = false
     let health = new Number()
@@ -182,16 +182,17 @@ const pullAPI = async () => {
     
     if (match = true) {
       monstersArray[i].lif = health
+      monstersArray[i].atk = 0.1*health
+      monstersArray[i].def = 0
     } else {
       monstersArray.splice(i,1)
     }
 
   }
   // console.log(compendiumAllItemsArray)
-  // console.log(weaponsArray)
+  console.log(weaponsArray)
   console.log(shieldsArray)
-  // console.log(monstersArray)
-  // console.log(monstersArray)
+  console.log(monstersArray)
 }
 
 pullAPI()
@@ -253,7 +254,7 @@ let playerTurnCount = 0
 //CHARACTERS AND ITEMS
 
 //player - Name, Type, Attack, Defence, Row Location, Column Location
-const zelda = {
+const player = {
   nam: `Zelda`,
   typ: `player`,
   atk: 0,
@@ -267,8 +268,8 @@ const zelda = {
 const monster1 = {
   nam: `Ganon`,
   typ: `monster`,
-  atk: 1,
-  lif: 2,
+  atk: 5,
+  lif: 20,
   def: 0,
   row: 4,
   col: 4 
@@ -333,8 +334,8 @@ function checkValidBoardMove (charRow,charCol,eventRow,eventCol) {
 function getValidRandomMoves (currentRow, currentCol) {
   //Check corners
   let currentID = `${currentRow}${currentCol}`
-  console.log(`Current Row: ${currentRow}`)
-  console.log(`Current Row: ${currentCol}`)
+  // console.log(`Current Row: ${currentRow}`)
+  // console.log(`Current Row: ${currentCol}`)
 
   currentRow = parseInt(currentRow)
   currentCol = parseInt(currentCol)
@@ -422,50 +423,55 @@ function consumeWeapon (char, item) {
   deleteObject(item)
 }
 
-//Checks Combat, returns/true
+//Combat involving player
 function playerCombat (attacker, defender) {
   console.log('Attacker')
   console.log(attacker)
   console.log('Defender')
   console.log(defender)
   
-  let whoIsPlayer = new String()
-  attacker.typ == `player` ? whoIsPlayer = `a` : whoIsPlayer = `d`
-
-
   let round = 0
-  let aInitialAtk = attacker.atk
-  let aInitialDef = attacker.def
+  
+  //Combat Stats
   let aInitialLif = attacker.lif
-  let dInitialAtk = defender.atk
-  let dInitialDef = defender.def
   let dInitialLif = defender.lif
 
-  // //Set attacker attack value to defender health or max attack, whichever is lower
-  // let combatAttack = 0
-  // (dInitialLif < aInitialAtk) ? combatAttack = dInitialLif : combatAttack = aInitialAtk
+  //Start Combat
 
   while ((attacker.lif>0)&&(defender.lif>0)) {
     round++
-    //Attacker attacks first
-      //Defender loses life equal to attack value less defence
-    defender.lif -= (aInitialAtk - dInitialDef)
-
-    //If Defender survives
-      //Attacker loses life equal to attack value less defence
+    //Attacker attacks first; Defender loses life equal to attack value less defence
+    
+    if ((attacker.atk - defender.def)>0) {
+      defender.lif -= (attacker.atk - defender.def)
+    }  
+    //If Defender survives; Attacker loses life equal to attack value less defence
     if (defender.lif > 0) {
-      attacker.lif -= (dInitialAtk - aInitialDef)
+      if ((defender.atk - attacker.def)>0) {
+        attacker.lif -= (defender.atk - attacker.def)
+      }
     }
+
+    console.log(`Round: ${round}`)
+    console.log(`Attacker Life: ${attacker.lif}`)
+    console.log(`Defender Life: ${defender.lif}`)
   }
 
-  console.log(`Combat ended after ${round} rounds`)
+  console.log(`Combat ended after ${round} rounds.`)
 
-  if (zelda.lif>0) {
-    zelda.def = 0
-    zelda.atk -= 
-    //lose shield
-    //lose attack equal to initial 
-
+  // If player wins, player loses shield, reduces attack, and monster is eliminated
+  if (player.lif>0) {
+    //Lose Shield
+    player.def = 0
+    //Lose attack equal to the monster's initial life
+    attacker.typ == `player` ? player.atk -= dInitialLif : player.atk -= aInitialLif
+    if (player.atk <0) {player.atk = 0} 
+    console.log('Attacker')
+    console.log(attacker)
+    console.log('Defender')
+    console.log(defender)
+    //Delete monster
+    attacker.typ == `player` ? deleteObject(defender) : deleteObject(attacker)
   } else {
     gameOver()
   }
@@ -486,9 +492,8 @@ function monsterTurn () {
   executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
 }
 
-
 function gameOver () {
-
+  console.log(`GAME OVER`)
 }
 
 //*****GAMEPLAY*****
@@ -496,7 +501,7 @@ function gameOver () {
 // playerStart()
 // monsterStart()
 
-objectStart(zelda)
+objectStart(player)
 objectStart(monster1)
 objectStart(sword1)
 
@@ -511,22 +516,22 @@ gameSquares.forEach ((square) => {
     let moveCol = parseInt(moveLocation.charAt(1))
     //Check valid player move
     console.log(`PLAYER TURN`)
-    let validPlayerBoardMove = checkValidBoardMove(zelda.row, zelda.col, moveRow, moveCol)
+    let validPlayerBoardMove = checkValidBoardMove(player.row, player.col, moveRow, moveCol)
     if (validPlayerBoardMove == true) {
       playerTurnCount++
       let moveLocationObject = checkNewLocationObject(moveRow,moveCol)
       if (moveLocationObject != null) {
         switch (moveLocationObject.typ) {
           case 'monster':
-            playerCombat(zelda, moveLocationObject)
+            playerCombat(player, moveLocationObject)
           break;
           case `weapon`:
             console.log("Weapon Case")
-            consumeWeapon(zelda, moveLocationObject)
+            consumeWeapon(player, moveLocationObject)
           break;
         }
       }
-      executeValidMove(zelda, moveRow, moveCol)
+      executeValidMove(player, moveRow, moveCol)
       if ((playerTurnCount%2) == 0){
         monsterTurn()
       }
