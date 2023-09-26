@@ -1,0 +1,20 @@
+
+// function playerStart () {
+//   //Update boardState
+//   let boardKey = `b${zelda.row}${zelda.col}`
+//   //console.log(boardKey)
+//   boardState[boardKey].objectOnLoc = zelda
+//   //console.log(boardState[boardKey])
+//   //Update HTML
+//   document.getElementById(`${zelda.row}${zelda.col}`).innerHTML = zelda.nam
+// }
+
+// function monsterStart () {
+//   //Update boardState
+//   let boardKey = `b${monster1.row}${monster1.col}`
+//   //console.log(boardKey)
+//   boardState[boardKey].objectOnLoc = monster1
+//   //console.log(boardState[boardKey]) 
+//   //Update HTML
+//    document.getElementById(`${monster1.row}${monster1.col}`).innerHTML = monster1.nam
+// }

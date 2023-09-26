@@ -30,7 +30,8 @@ Spoiler alert - Link is probably cooking dubious food...
 - If the attacking player survives the combat, they move to the new spot
   //-TBD - Attacking character does not move if they win combat, i.e., combat counts as their turn 
 - If the defending player survives the combat, they stay in their original spot
-- Player's cumulative attack is reduced by the value of the monster's defence
+- After each round of combat:
+  - Player's cumulative attack is reduced by the value of the monster's defence
 
 ### Monsters
 - Monsters have health and attack based (TBD, most likely) on API-based stats
@@ -50,7 +51,7 @@ Spoiler alert - Link is probably cooking dubious food...
   - Replenishes player health proportional to API value
   - Collecting [3] foods creates a "meal" that replenishes health
 - Weapon - adds to cumulative attack value
-- Shield - negates attack up to defence amount, breaks upon use, any remaining damage reduces player hearts
+- Shield - adds to cumulative defence value
 - Fairy - refills some health
 - Treasure chest - random item based on appearance rate
 

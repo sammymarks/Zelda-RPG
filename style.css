@@ -1,0 +1,38 @@
+@media screen and (max-height: 1000px) {
+
+    body {
+        height: 1000px;
+    }
+
+    .game-board-container {
+    
+        /* Grid Container Format */
+        
+        height: 70%;
+        padding: 5px;
+        border: 5px;
+        border-color: forestgreen;
+        border-style: solid;
+        aspect-ratio: 1/1;    
+        
+        /* Grid Area */
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+        gap: 2px;
+        /* justify-items: stretch;
+        align-items: stretch; */
+    }
+    
+    
+    
+    .game-board-square {
+        display: grid;
+        grid-template: none | 1fr/1fr;
+        background-color: rgb(137, 203, 137);
+        border: 2px;
+        border-style: solid;
+        border-color: black
+    
+    }  
+}
