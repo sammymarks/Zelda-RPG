@@ -429,6 +429,10 @@ function playerCombat (attacker, defender) {
   console.log('Defender')
   console.log(defender)
   
+  let whoIsPlayer = new String()
+  attacker.typ == `player` ? whoIsPlayer = `a` : whoIsPlayer = `d`
+
+
   let round = 0
   let aInitialAtk = attacker.atk
   let aInitialDef = attacker.def
@@ -449,15 +453,16 @@ function playerCombat (attacker, defender) {
 
     //If Defender survives
       //Attacker loses life equal to attack value less defence
-    if (defender.life > 0) {
+    if (defender.lif > 0) {
       attacker.lif -= (dInitialAtk - aInitialDef)
     }
   }
 
   console.log(`Combat ended after ${round} rounds`)
 
-  if (player.lif>0) {
-    player.def = 0
+  if (zelda.lif>0) {
+    zelda.def = 0
+    zelda.atk -= 
     //lose shield
     //lose attack equal to initial 
 
