@@ -181,6 +181,7 @@ const pullAPI = async () => {
     })
     
     if (match = true) {
+      monstersArray[i].maxLife = health
       monstersArray[i].lif = health
       monstersArray[i].atk = 0.1*health
       monstersArray[i].def = 0
@@ -258,6 +259,7 @@ const player = {
   nam: `Zelda`,
   typ: `player`,
   atk: 0,
+  maxlife: 10;
   lif: 10,
   def: 1,
   row: 3,
@@ -269,6 +271,7 @@ const monster1 = {
   nam: `Ganon`,
   typ: `monster`,
   atk: 2,
+  maxlife: 5;
   lif: 5,
   def: 0,
   row: 5,

@@ -19,6 +19,20 @@
 //    document.getElementById(`${monster1.row}${monster1.col}`).innerHTML = monster1.nam
 // }
 
+  //  //Set player combat attack to monster health or max player attack, whichever is lower; set attacker and defender combat values
+  // let playerCombatAttack
+  // let aCombatAttack
+  // let dCombatAttack
+
+  // if (attacker.typ == `player`) {
+  //   dInitialLif < attacker.atk ? playerCombatAttack = dInitialLif : playerCombatAttack = attacker.atk
+  //   aCombatAttack = playerCombatAttack
+  //   dCombatAttack = defender.atk
+  // } else {
+  //   attacker.lif < defender.atk ? playerCombatAttack = attacker.lif : playerCombatAttack = defender.atk
+  //   dCombatAttack = playerCombatAttack
+  //   aCombatAttack = attacker.atk
+  // }
 
 
 9/25 Standup Notes
@@ -37,4 +51,58 @@ So far...
     - Create initial UI, including title, gameboard, turn status, player stats, and new game button
 - Remainder of the week
     - CSS cleanup
-    
+    - V2+ time permitting
+
+
+
+
+# R1 Prototype
+- Grid - 6x6
+- Single/fixed-stats objects
+  - Monster (1 atk, 2 health)
+  - Sword (2 atk)
+  - Player (0 atk, 3 health)
+- Game Data
+  - Player
+    - Attack
+    - Health
+  - Weapon
+    - Attack
+  - Monster
+    - Attack
+    - Health
+- Mechanics
+  - Movement
+  - Combat (including multi-combat)
+  - Turn Count
+- QA/Success Criteria
+  - Valid turn order - Player -> Monster
+  - Valid movement - Player
+    - Player moves from keyboard/mouse
+    - Cannot exit grid
+    - Movement limited to one square up/down/left/right
+  - Valid movement - Monster
+    - Random Movement
+    - Cannot exit grid
+    - Movement limited to one square up/down/left/right
+  - Player moves to sword location
+    - Sword Disappears
+    - Player Attack Stats are increased by sword attack value
+  - Valid Combat
+    - Attacker initiates
+    - Combat repeats until character health is <1
+
+# R2 Additional Mechanics
+- Single/fixed stats objects
+  - Shield
+  - Food
+  - Fairy
+  - Treasure
+  - Heart Container
+- Mechanics
+  - Shield Consume/Break
+  - Food consume/health increase
+  - Heart consume/ increase health container count
+
+# R3 
+  - 

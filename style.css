@@ -1,14 +1,101 @@
-@media screen and (max-height: 1000px) {
+html {
+    background: url(https://images3.alphacoders.com/710/710798.jpg) no-repeat center center fixed; 
+    background-size: cover;
 
-    body {
-        height: 1000px;
+}
+
+@font-face {
+    font-family: 'botw-caps';
+    src: url(/TheWildBreathOfZelda-15Lv.ttf);
+}
+
+body {
+}
+
+.background-image {
+    width: 100vw;
+}
+/* @media screen and (max-height: 1000px) { */
+
+/* https://css-tricks.com/aspect-ratios-grid-items/ */
+.screen-container {
+    margin: auto;
+    max-width: 1100px;
+    justify-content: center;
+    text-align: center;
+
+    /* height: 100vh;
+    width: 100vw; */
+    
+    display: grid;
+    /* grid-template-rows: 15% 40% 40% 5%; */
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: 10fr 35fr 35fr 5fr;
+    column-gap: 10px;
+    row-gap: 10px;
+    grid-template-areas:
+    "title title"
+    "board updates"
+    "board stats"
+    "board buttons";
+}
+
+/* .screen-item {
+    background-color: darkgray;
+    position: relative;
+    border: 1px solid orange;
+} */
+    .title-container {
+        grid-area: title;
+        border: 2px solid black;
+        font-family: botw-caps;
+    }
+    
+    .updates-container {
+        grid-area: updates;
+        background-color: rgba(0, 0, 0, 0.25);        
+}
+
+    .buttons-container {
+        grid-area: buttons;
+        border: 2px solid black;
     }
 
+    .player-stats-container {
+        grid-area: stats;
+        border: 2px solid black;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        column-gap: 3;
+        row-gap: 3px;
+        align-items: center;
+        justify-items: center;
+    }
+
+        .player-stats-item {
+            border: 2px solid black;
+            margin: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            justify-items: center;
+
+        }
+            .stats-image {
+                width: 100%;
+                height: auto    
+                padding: 3px
+            }
+
+
+
     .game-board-container {
-    
+        grid-area: board;
         /* Grid Container Format */
         
-        height: 70%;
+        /* height: 100%; */
         padding: 5px;
         border: 5px;
         border-color: forestgreen;
@@ -35,4 +122,5 @@
         border-color: black
     
     }  
-}
+    
+/* } */

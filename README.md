@@ -13,6 +13,11 @@ Spoiler alert - Link is probably cooking dubious food...
   - Styling is hard, and I want to do this right!
   - API data set is not great - may need to hand-pick a subset of objects manually OR commit to randomness that takes away from "immersion"
 
+## Credits
+- API...
+- Background Image: https://zelda.nintendo.com/breath-of-the-wild/media/
+- Enemy Health...
+
 ## Game Play
 - Turn based "RPG" where Zelda (main character) moves across a grid collecting items and fighting enemies until she finds Link
 - Zelda's turn: movememt up, down, or sideways by one square (controlled by keyboard or click on square) and automatic "collection" of items on the square
