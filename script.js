@@ -271,8 +271,8 @@ const monster1 = {
   atk: 2,
   lif: 5,
   def: 0,
-  row: 4,
-  col: 4 
+  row: 5,
+  col: 5 
 }
 
 //weapon - Name, Type, Attack, Row Location, Column Location
@@ -282,6 +282,22 @@ const sword1 = {
   atk: 1,
   row: 2,
   col: 3
+}
+
+const sword2 = {
+  nam: `Soldier Sword`,
+  typ: `weapon`,
+  atk: 1,
+  row: 4,
+  col: 5
+}
+
+const sword3 = {
+  nam: `Soldier Spear`,
+  typ: `weapon`,
+  atk: 1,
+  row: 5,
+  col: 4
 }
 
 //*****FUNCTIONS*****
@@ -491,18 +507,19 @@ function monsterTurn () {
   let targetObject = checkNewLocationObject(monsterMoveRow,monsterMoveCol)
   console.log(`Target Object`)
   console.log(targetObject)
-  switch (targetObject.typ) {
-    case `player`:
-      console.log(`MONSTER INITIATES COMBAT`)
-      playerCombat(monster1,player)
-    break;
-    case `weapon`: 
-      consumeWeapon(monster1, targetObject)
-      executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
-    break;
-    case null:
-      executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
-    break;
+  if (targetObject!=null) {
+    switch (targetObject.typ) {
+      case `player`:
+        console.log(`MONSTER INITIATES COMBAT`)
+        playerCombat(monster1,player)
+      break;
+      case `weapon`: 
+        consumeWeapon(monster1, targetObject)
+        executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
+      break;
+    }
+  } else {
+    executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
   }
 }
 
@@ -518,6 +535,9 @@ function gameOver () {
 objectStart(player)
 objectStart(monster1)
 objectStart(sword1)
+objectStart(sword2)
+objectStart(sword3)
+
 
 console.log(boardState)
 
