@@ -268,8 +268,8 @@ const player = {
 const monster1 = {
   nam: `Ganon`,
   typ: `monster`,
-  atk: 5,
-  lif: 20,
+  atk: 2,
+  lif: 5,
   def: 0,
   row: 4,
   col: 4 
@@ -487,9 +487,23 @@ function monsterTurn () {
   let randomMove = possibleMoves[randomMoveSelector]
   //console.log(randomMove)
   let monsterMoveRow = parseInt(randomMove.charAt(0))
-  let mnsterMoveCol = parseInt(randomMove.charAt(1))
-  //combat(monster1, monsterMoveRow, mnsterMoveCol)
-  executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
+  let monsterMoveCol = parseInt(randomMove.charAt(1))
+  let targetObject = checkNewLocationObject(monsterMoveRow,monsterMoveCol)
+  console.log(`Target Object`)
+  console.log(targetObject)
+  switch (targetObject.typ) {
+    case `player`:
+      console.log(`MONSTER INITIATES COMBAT`)
+      playerCombat(monster1,player)
+    break;
+    case `weapon`: 
+      consumeWeapon(monster1, targetObject)
+      executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
+    break;
+    case null:
+      executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
+    break;
+  }
 }
 
 function gameOver () {
