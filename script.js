@@ -259,11 +259,12 @@ const player = {
   nam: `Zelda`,
   typ: `player`,
   atk: 0,
-  maxlife: 10;
+  maxLife: 10,
   lif: 10,
   def: 1,
   row: 3,
-  col: 3 
+  col: 3,
+  image: "/Assets/TLoZ_Princess_Zelda_Sprite.png"
 }
 
 //monster - Name, Type, Attack, Defence, Row Location, Column Location
@@ -271,28 +272,31 @@ const monster1 = {
   nam: `Ganon`,
   typ: `monster`,
   atk: 2,
-  maxlife: 5;
+  maxLife: 5,
   lif: 5,
   def: 0,
   row: 5,
-  col: 5 
+  col: 5,
+  image: "/Assets/BotW_Dark_Beast_Ganon_Model.png"
 }
 
 //weapon - Name, Type, Attack, Row Location, Column Location
 const sword1 = {
-  nam: `Flame Sword`,
+  nam: `Great Frostblade`,
   typ: `weapon`,
   atk: 1,
   row: 2,
-  col: 3
+  col: 3,
+  image: "https://botw-compendium.herokuapp.com/api/v3/compendium/entry/great_frostblade/image"
 }
 
 const sword2 = {
-  nam: `Soldier Sword`,
+  nam: `Forest Dweller's Spear`,
   typ: `weapon`,
   atk: 1,
   row: 4,
-  col: 5
+  col: 5,
+  image: "https://botw-compendium.herokuapp.com/api/v3/compendium/entry/forest_dweller's_spear/image"
 }
 
 const sword3 = {
@@ -319,16 +323,33 @@ function generateRandom (min, max) {
 
 //Player Starting Location
 
+
+function updatePlayerStats () {
+  console.log(`Update Player Stats`)
+  //Health
+  document.getElementById('life-stats').innerHTML = `${player.lif}/${player.maxLife}`
+  //Move Count
+  document.getElementById('move-count-stats').innerHTML = `${playerTurnCount}`
+  //Attack
+  document.getElementById('attack-stats').innerHTML = `${player.atk}`
+  //Defence
+  document.getElementById('defence-stats').innerHTML = `${player.def}`
+}
+
 //function setStartLocation () {}
 
 function objectStart (newObject) {
-  //Update boardState
+    //Update boardState
   let boardKey = `b${newObject.row}${newObject.col}`
   //console.log(boardKey)
   boardState[boardKey].objectOnLoc = newObject
   //console.log(boardState[boardKey])
   //Update HTML
-  document.getElementById(`${newObject.row}${newObject.col}`).innerHTML = newObject.nam
+  // document.getElementById(`${newObject.row}${newObject.col}`).innerHTML = newObject.nam
+  // if (newObject.typ=='player') {
+  document.getElementById(`${newObject.row}${newObject.col}`).innerHTML = `<img class="board-object-image" src="${newObject.image}">`
+  // }
+  updatePlayerStats()
 }
 
 function deleteObject (obj) {
@@ -337,6 +358,8 @@ function deleteObject (obj) {
   obj.row = null
   obj.col = null
 }
+
+
 
 //Is player move valid? Returns true/false
 function checkValidBoardMove (charRow,charCol,eventRow,eventCol) {
@@ -413,6 +436,9 @@ function executeValidMove (character, futureRow, futureColumn) {
   //Update new boardState and HTML
   boardState[futureBoardLoc].objectOnLoc = character
   document.getElementById(`${character.row}${character.col}`).innerHTML = character.nam
+  if (character.typ=='player') {
+    document.getElementById(`${character.row}${character.col}`).innerHTML = `<img class="board-object-image" src="${character.image}">`
+  }
 
   // console.log(`Future`)
   // console.log(character.nam)
@@ -524,6 +550,7 @@ function monsterTurn () {
   } else {
     executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
   }
+  updatePlayerStats()
 }
 
 function gameOver () {
@@ -536,7 +563,7 @@ function gameOver () {
 // monsterStart()
 
 objectStart(player)
-objectStart(monster1)
+// objectStart(monster1)
 objectStart(sword1)
 objectStart(sword2)
 objectStart(sword3)
@@ -555,7 +582,11 @@ gameSquares.forEach ((square) => {
     console.log(`PLAYER TURN`)
     let validPlayerBoardMove = checkValidBoardMove(player.row, player.col, moveRow, moveCol)
     if (validPlayerBoardMove == true) {
+      
       playerTurnCount++
+      let playerTurnAction = new String()
+      document.querySelector(".updates-container").innerHTML = `TURN ${playerTurnCount}`
+
       let moveLocationObject = checkNewLocationObject(moveRow,moveCol)
       if (moveLocationObject != null) {
         switch (moveLocationObject.typ) {
@@ -569,6 +600,7 @@ gameSquares.forEach ((square) => {
         }
       }
       executeValidMove(player, moveRow, moveCol)
+      updatePlayerStats()
       if ((playerTurnCount%2) == 0){
         monsterTurn()
       }

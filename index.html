@@ -51,28 +51,39 @@
             <div class="game-board-square" id="52">[5][2]</div>
             <div class="game-board-square" id="53">[5][3]</div>
             <div class="game-board-square" id="54">[5][4]</div>
-            <div class="game-board-square" id="55">[5][5]</div>
-        </div>
-        <div class="screen-item updates-container">Updates Container</div>
-        <div class="screen-item player-stats-container">
-            <div class="player-stats-item life">
-                <img class="stats stats-image" src="/Assets/BotW_Heart_Icon.png">
-                <div class="stats data">STATS</div>
-            </div>
-            <div class="player-stats-item move-count">
-                <img class="stats stats-image" src="/Assets/LA_Pegasus_Boots_Artwork.png">
-                <div class="stats data">STATS</div>
-            </div>
-            <div class="player-stats-item attack">
-                <img class="stats stats-image" src="/Assets/BotW_Sword_Model.png">
-                <div class="stats data">STATS</div>
-            </div>
-            <div class="player-stats-item defence">
-                <img class="stats stats-image" src="/Assets/BotW_Hylian_Shield_Icon.png">
-                <div class="stats data">STATS</div>
+            <div class="game-board-square" id="55">
+                <img class="board-object-image" src="/Assets/BotW_Dark_Beast_Ganon_Model.png">
+                <div class="board-object-name">Calamity Ganon</div>
+                <div class="board-object-health"><span class="hearts">&hearts;</span>10</div>
+                <div class="board-object-type"><span class="type">&#128128;</span></div>
+                <div class="board-object-attack"><span class="swords">&#9876;</span>10</div>
+                <div class="board-object-defence"><span class="shields">&#128737;</span>10</div>
             </div>
         </div>
-        <div class="screen-item buttons-container">Buttons Container</div>
+        <div class="screen-item right-screen-container">
+            <div class="screen-item updates-container">Updates Container</div>
+            <div class="screen-item player-stats-container">
+                <div class="player-stats-item life">
+                    <img class="stats stats-image" src="/Assets/BotW_Heart_Icon.png">
+                    <div class="stats stats-data" id="life-stats">STATS</div>
+                </div>
+                <div class="player-stats-item move-count">
+                    <img class="stats stats-image" src="/Assets/LA_Pegasus_Boots_Artwork.png">
+                    <div class="stats stats-data" id="move-count-stats">STATS</div>
+                </div>
+                <div class="player-stats-item attack">
+                    <img class="stats stats-image" src="/Assets/BotW_Sword_Model.png">
+                    <div class="stats stats-data" id="attack-stats">STATS</div>
+                </div>
+                <div class="player-stats-item defence">
+                    <img class="stats stats-image" src="/Assets/BotW_Hylian_Shield_Icon.png">
+                    <div class="stats stats-data" id="defence-stats">STATS</div>
+                </div>
+            </div>
+            <div class="screen-item buttons-container">
+                <button>New Game</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>

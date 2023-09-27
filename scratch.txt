@@ -35,6 +35,17 @@
   // }
 
 
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        column-gap: 3px;
+        row-gap: 3px;
+        align-items: center;
+        justify-items: center;
+
+<img class="game-board-pic" src="/Assets/TLoZ_Princess_Zelda_Sprite.png">
+
+
 9/25 Standup Notes
 So far...
 - Built out gameboard
