@@ -203,9 +203,18 @@ pullAPI()
 //GLOBAL
 
 //Event Listener Objects 
-let gameSquares = document.querySelectorAll(`.game-board-square`)
+  //Game Board
+  let gameSquares = document.querySelectorAll(`.game-board-square`)
+  // Grabbing About the Game button
+  const openBtn = document.getElementById('openModal');
 
-//Board State
+  // Grabbing modal element
+  const modal = document.getElementById('modal')
+
+  // Grabbing close button
+  const close = document.getElementById('close')
+
+  //Board State
 
 const boardState = {
  b00: {row: 0, col: 0, objectOnLoc: null, terrain: null},
@@ -338,19 +347,56 @@ function updatePlayerStats () {
 
 //function setStartLocation () {}
 
+function renderObject (object, row, col) {
+
+  //Get Type
+  let typeChar
+  switch (object.typ){
+    case "player":
+      typeChar = `&#128120;`
+    break;
+    case "weapon":
+      typeChar = '&#9876;'
+    break;
+    case "monster":
+      typeChar = `&#128128;`
+    break;
+    case "link":
+      typeChar = `&#129501;`
+    break;
+    case "shield":
+      typeChar = `&#128737`
+    break;
+    case "treasure":
+      typeChar
+  }
+
+  let htmlString = new String()
+
+  if (object.hasOwnProperty('image')==true) {htmlString += `<img class="board-object-image" src="${object.image}">\n`}
+  if (object.hasOwnProperty('nam')==true) {htmlString += `<div class="board-object-name">${object.nam}</div>`}
+  if (object.hasOwnProperty('lif')==true) {htmlString += `<div class="board-object-health"><span class="hearts">&hearts; </span>${object.lif}</div>\n`}
+  if (object.hasOwnProperty('typ')==true) {htmlString += `<div class="board-object-type"><span class="type">${typeChar}</span></div>\n`}
+  if (object.hasOwnProperty('atk')==true) {htmlString += `<div class="board-object-attack"><span class="swords">&#9876; </span>${object.atk}</div>\n`}
+  if (object.hasOwnProperty('def')==true) {htmlString += `<div class="board-object-defence"><span class="shields">&#128737; </span>${object.def}</div>\n`}
+
+  document.getElementById(`${row}${col}`).innerHTML = htmlString
+
+
+}
+
 function objectStart (newObject) {
     //Update boardState
   let boardKey = `b${newObject.row}${newObject.col}`
   //console.log(boardKey)
   boardState[boardKey].objectOnLoc = newObject
   //console.log(boardState[boardKey])
-  //Update HTML
-  // document.getElementById(`${newObject.row}${newObject.col}`).innerHTML = newObject.nam
-  // if (newObject.typ=='player') {
-  document.getElementById(`${newObject.row}${newObject.col}`).innerHTML = `<img class="board-object-image" src="${newObject.image}">`
-  // }
+  
+  renderObject(newObject, newObject.row, newObject.col)
   updatePlayerStats()
 }
+
+
 
 function deleteObject (obj) {
   let objKey = `b${obj.row}${obj.col}`
@@ -435,10 +481,12 @@ function executeValidMove (character, futureRow, futureColumn) {
   character.col = futureColumn
   //Update new boardState and HTML
   boardState[futureBoardLoc].objectOnLoc = character
-  document.getElementById(`${character.row}${character.col}`).innerHTML = character.nam
-  if (character.typ=='player') {
-    document.getElementById(`${character.row}${character.col}`).innerHTML = `<img class="board-object-image" src="${character.image}">`
-  }
+  renderObject(character,futureRow,futureColumn)
+ 
+  // document.getElementById(`${character.row}${character.col}`).innerHTML = character.nam
+  // if (character.typ=='player') {
+  //   document.getElementById(`${character.row}${character.col}`).innerHTML = `<img class="board-object-image" src="${character.image}">`
+  // }
 
   // console.log(`Future`)
   // console.log(character.nam)

@@ -64,6 +64,16 @@ So far...
     - CSS cleanup
     - V2+ time permitting
 
+9/27 Standup Notes
+- For today 
+    - (1 hour, time boxed) Grid layers on character icons/stats
+    - Code and CSS for messages/status box
+    - game over function and screen popup
+    - (stretch) new game function and screen popup
+- Remainder of the week
+    - CSS cleanup
+    - V2+ time permitting
+
 
 
 
