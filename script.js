@@ -203,18 +203,18 @@ pullAPI()
 //GLOBAL
 
 //Event Listener Objects 
-  //Game Board
-  let gameSquares = document.querySelectorAll(`.game-board-square`)
-  // Grabbing About the Game button
-  const openBtn = document.getElementById('openModal');
+//Game Board
+let gameSquares = document.querySelectorAll(`.game-board-square`)
+// Grabbing About the Game button
+const openBtn = document.getElementById('openModal');
 
-  // Grabbing modal element
-  const modal = document.getElementById('modal')
+// Grabbing modal element
+const modal = document.getElementById('modal')
 
-  // Grabbing close button
-  const close = document.getElementById('close')
+// Grabbing close button
+const close = document.getElementById('close')
 
-  //Board State
+//Board State
 
 const boardState = {
  b00: {row: 0, col: 0, objectOnLoc: null, terrain: null},
@@ -317,6 +317,15 @@ const sword3 = {
 }
 
 //*****FUNCTIONS*****
+
+//Game Over Modal
+const openModal = () => {
+  modal.style.display = 'block';
+}
+
+const closeModal = () => {
+  modal.style.display = 'none'
+}
 
 //Console Log point-in-time board-state
 function showGridState () {
@@ -655,3 +664,8 @@ gameSquares.forEach ((square) => {
     }
   })
 })
+
+//*****OTHER EVENT LISTENERS*****
+openBtn.addEventListener('click', openModal())
+
+close.addEventListener('click', closeModal())
