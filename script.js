@@ -191,9 +191,9 @@ const pullAPI = async () => {
 
   }
   // console.log(compendiumAllItemsArray)
-  console.log(weaponsArray)
-  console.log(shieldsArray)
-  console.log(monstersArray)
+  // console.log(weaponsArray)
+  // console.log(shieldsArray)
+  // console.log(monstersArray)
 }
 
 pullAPI()
@@ -267,7 +267,7 @@ let playerTurnCount = 0
 const player = {
   nam: `Zelda`,
   typ: `player`,
-  atk: 0,
+  atk: 2,
   maxLife: 10,
   lif: 10,
   def: 1,
@@ -280,7 +280,7 @@ const player = {
 const monster1 = {
   nam: `Ganon`,
   typ: `monster`,
-  atk: 2,
+  atk: 20,
   maxLife: 5,
   lif: 5,
   def: 0,
@@ -327,12 +327,14 @@ const closeModal = () => {
   modal.style.display = 'none'
 }
 
-//Console Log point-in-time board-state
-function showGridState () {
-  for (let i=0; i<gridState.length; i++) {
-    console.log(gridState[i])
-  }
-}
+// function clearBoardState() {
+//   console.log(`Clear Board State FUNCTION`)
+//   Object.values(boardState).forEach(square => {
+//     console.log(square.objectOnLoc)
+//     square.objectOnLoc = null
+//   })
+//   console.log(boardState)
+// }
 
 //https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
 function generateRandom (min, max) {
@@ -395,7 +397,8 @@ function renderObject (object, row, col) {
 }
 
 function objectStart (newObject) {
-    //Update boardState
+  console.log(`objectStart ${newObject.nam}`)
+  //Update boardState
   let boardKey = `b${newObject.row}${newObject.col}`
   //console.log(boardKey)
   boardState[boardKey].objectOnLoc = newObject
@@ -476,12 +479,6 @@ function executeValidMove (character, futureRow, futureColumn) {
   let currentBoardLoc = `b${currentRow}${currentCol}`
   let futureBoardLoc = `b${futureRow}${futureColumn}`
 
-  // console.log(`Current`)
-  // console.log(character.nam)
-  // console.log(character.row, character.col)
-  // console.log(`Current Board State`)
-  // console.log(boardState)
-
   //Clear initial boardState and HTML
   boardState[currentBoardLoc].objectOnLoc = null
   document.getElementById(`${currentRow}${currentCol}`).innerHTML = `[${currentRow}][${currentCol}]`
@@ -491,17 +488,6 @@ function executeValidMove (character, futureRow, futureColumn) {
   //Update new boardState and HTML
   boardState[futureBoardLoc].objectOnLoc = character
   renderObject(character,futureRow,futureColumn)
- 
-  // document.getElementById(`${character.row}${character.col}`).innerHTML = character.nam
-  // if (character.typ=='player') {
-  //   document.getElementById(`${character.row}${character.col}`).innerHTML = `<img class="board-object-image" src="${character.image}">`
-  // }
-
-  // console.log(`Future`)
-  // console.log(character.nam)
-  // console.log(character.row, character.col)
-  // console.log(`Future Board State`)
-  // console.log(boardState)
 }
 
 //Returns object type sitting in future location
@@ -520,8 +506,7 @@ function consumeWeapon (char, item) {
   console.log(`Starting char atk: ${char.atk}`)
   char.atk += item.atk
   console.log(`Ending char atk: ${char.atk}`)
-
-  console.log(`${char.nam} picked up a ${item.nam} and gained ${item.atk} attack`)
+  document.querySelector("#game-log-text").innerHTML += `${char.nam} picked up a ${item.nam} and gained ${item.atk} attack<br>`
   deleteObject(item)
 }
 
@@ -532,11 +517,16 @@ function playerCombat (attacker, defender) {
   console.log('Defender')
   console.log(defender)
   
+  document.querySelector("#game-log-text").innerHTML += `${attacker.nam} attacks ${defender.nam}!<br>`
+
+
   let round = 0
   
   //Combat Stats
   let aInitialLif = attacker.lif
   let dInitialLif = defender.lif
+  let pInitialAtk = player.atk
+  let pInitialDef = player.def
 
   //Start Combat
 
@@ -553,13 +543,11 @@ function playerCombat (attacker, defender) {
         attacker.lif -= (defender.atk - attacker.def)
       }
     }
-
-    console.log(`Round: ${round}`)
-    console.log(`Attacker Life: ${attacker.lif}`)
-    console.log(`Defender Life: ${defender.lif}`)
+    // console.log(`Round: ${round}`)
+    // console.log(`Attacker Life: ${attacker.lif}`)
+    // console.log(`Defender Life: ${defender.lif}`)
   }
 
-  console.log(`Combat ended after ${round} rounds.`)
 
   // If player wins, player loses shield, reduces attack, and monster is eliminated
   if (player.lif>0) {
@@ -568,14 +556,26 @@ function playerCombat (attacker, defender) {
     //Lose attack equal to the monster's initial life
     attacker.typ == `player` ? player.atk -= dInitialLif : player.atk -= aInitialLif
     if (player.atk <0) {player.atk = 0} 
-    console.log('Attacker')
-    console.log(attacker)
-    console.log('Defender')
-    console.log(defender)
+
+    //Update log
+    if (attacker.typ == "player") {
+      document.querySelector("#game-log-text").innerHTML += `${attacker.nam} defeated ${defender.nam} after ${round} ${round>1 ? `rounds` : `round`}<br>`
+    } else {
+      document.querySelector("#game-log-text").innerHTML += `${defender.nam} defeated ${attacker.nam} after ${round} ${round>1 ? `rounds` : `round`}<br>`
+    }
+    
+    if ((pInitialAtk-player.atk)>0) {document.querySelector("#game-log-text").innerHTML += `${player.nam}'s weapons breaks and loses ${pInitialAtk-player.atk} attack<br>`}
+
+    if ((pInitialDef-player.def)>0) {document.querySelector("#game-log-text").innerHTML += `${player.nam}'s shield breaks and loses all defence<br>`}
+
     //Delete monster
     attacker.typ == `player` ? deleteObject(defender) : deleteObject(attacker)
   } else {
-    gameOver()
+    if (defender.typ == "player") {
+      document.querySelector("#game-log-text").innerHTML += `${attacker.nam} defeated ${defender.nam} after ${round} ${round>1 ? `rounds` : `round`}<br>`
+    } else {
+      document.querySelector("#game-log-text").innerHTML += `${defender.nam} defeated ${attacker.nam} after ${round} ${round>1 ? `rounds` : `round`}<br>`
+    }
   }
 }
 
@@ -598,35 +598,69 @@ function monsterTurn () {
       case `player`:
         console.log(`MONSTER INITIATES COMBAT`)
         playerCombat(monster1,player)
+        if (player.lif <1) {
+          executeValidMove(monster1,monsterMoveRow,monsterMoveCol)
+          gameOver()
+        }
       break;
       case `weapon`: 
         consumeWeapon(monster1, targetObject)
         executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
       break;
-    }
+    } 
   } else {
+    document.querySelector("#game-log-text").innerHTML += `${monster1.nam} moves to an empty space<br>`
     executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
   }
   updatePlayerStats()
+}
+
+function playerTurn (moveRow, moveCol) {
+//Check valid player move
+  let validPlayerBoardMove = checkValidBoardMove(player.row, player.col, moveRow, moveCol)
+  if (validPlayerBoardMove == true) {
+    
+    playerTurnCount++
+    document.querySelector("#game-log-text").innerHTML = `<span id="turn">TURN ${playerTurnCount}\n<br>`
+
+    let moveLocationObject = checkNewLocationObject(moveRow,moveCol)
+    if (moveLocationObject != null) {
+      switch (moveLocationObject.typ) {
+        case 'monster':
+          playerCombat(player, moveLocationObject)
+        break;
+        case 'weapon':
+          consumeWeapon(player, moveLocationObject)
+        break;
+      }
+    } else {
+      document.querySelector("#game-log-text").innerHTML += `${player.nam} moves to an empty space<br>`
+    }
+    executeValidMove(player, moveRow, moveCol)
+    updatePlayerStats()
+  }
 }
 
 function gameOver () {
   console.log(`GAME OVER`)
 }
 
+function newGame () {
+  //clear boardState
+  Object.values(boardState).forEach(square => {
+    console.log(square.objectOnLoc)
+    square.objectOnLoc = null
+  })
+  objectStart(player)
+  objectStart(monster1)
+  objectStart(sword1)
+  objectStart(sword2)
+  objectStart(sword3)
+}
+
 //*****GAMEPLAY*****
 
-// playerStart()
-// monsterStart()
-
-objectStart(player)
-// objectStart(monster1)
-objectStart(sword1)
-objectStart(sword2)
-objectStart(sword3)
-
-
-console.log(boardState)
+newGame()
 
 //Begin Game Play with Player Turn
 gameSquares.forEach ((square) => {
@@ -635,37 +669,12 @@ gameSquares.forEach ((square) => {
     let moveLocation = square.getAttribute(`id`)
     let moveRow = parseInt(moveLocation.charAt(0))
     let moveCol = parseInt(moveLocation.charAt(1))
-    //Check valid player move
-    console.log(`PLAYER TURN`)
-    let validPlayerBoardMove = checkValidBoardMove(player.row, player.col, moveRow, moveCol)
-    if (validPlayerBoardMove == true) {
-      
-      playerTurnCount++
-      let playerTurnAction = new String()
-      document.querySelector(".updates-container").innerHTML = `TURN ${playerTurnCount}`
-
-      let moveLocationObject = checkNewLocationObject(moveRow,moveCol)
-      if (moveLocationObject != null) {
-        switch (moveLocationObject.typ) {
-          case 'monster':
-            playerCombat(player, moveLocationObject)
-          break;
-          case `weapon`:
-            console.log("Weapon Case")
-            consumeWeapon(player, moveLocationObject)
-          break;
-        }
-      }
-      executeValidMove(player, moveRow, moveCol)
-      updatePlayerStats()
-      if ((playerTurnCount%2) == 0){
-        monsterTurn()
-      }
-    }
+    playerTurn(moveRow, moveCol)
+    if ((playerTurnCount%2) == 0){monsterTurn()}
   })
 })
 
 //*****OTHER EVENT LISTENERS*****
-openBtn.addEventListener('click', openModal())
+// openBtn.addEventListener('click', openModal)
 
-close.addEventListener('click', closeModal())
+// close.addEventListener('click', closeModal)

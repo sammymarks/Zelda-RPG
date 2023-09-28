@@ -37,14 +37,27 @@
 # R2 Additional Mechanics
 - Single/fixed stats objects
   - Shield
-  - Food
   - Fairy
-  - Treasure
-  - Heart Container
 - Mechanics
   - Shield Consume/Break
-  - Food consume/health increase
-  - Heart consume/ increase health container count
+  - Fairy Consume consume/health increase
+- Logic
+  - Link spawn on turn 100 + link logic
+  - Random Monster spawn every 4 turns, surrounded by random equipment
+  - Spawn random starting monster, equipment
+- Look and Feel
+  - Instructions Modal and Button, defaults to On
+  - New Game button
+  - Game over modal
+
+
 
 # R3 
+  - 
+- Single/fixed stats objects
+  - Food
+  - Treasure
+  - Heart Container
+- Look and Feel
+  - Status Box dynamic scrolling
   - 

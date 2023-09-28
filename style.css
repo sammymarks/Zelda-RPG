@@ -1,3 +1,20 @@
+/* #scroller * {
+    overflow-anchor: none;
+  }
+  
+  #anchor {
+    overflow-anchor: auto;
+    height: 1px;
+  }  */
+
+#game-log-text {
+    text-align: left;
+}
+
+/* #turn {
+     font-size: 2em;     
+} */
+
 html {
     background: url(https://images3.alphacoders.com/710/710798.jpg) no-repeat center center fixed; 
     background-size: cover;
@@ -14,9 +31,6 @@ html {
     text-transform: uppercase;
 }
 
-body {
-}
-
 .background-image {
     width: 100vw;
 }
@@ -25,7 +39,7 @@ body {
 /* https://css-tricks.com/aspect-ratios-grid-items/ */
 .screen-container {
     margin: auto;
-    max-width: 1100px;
+    max-width: 900px;
     min-width: 600px;
     justify-content: center;
     text-align: center;
@@ -89,13 +103,18 @@ body {
 
     .title-container {
         grid-area: title;
-        border: 2px solid black;
         font-family: botw-caps;
     }
     
     .right-screen-container {
         grid-area: right-screen;
+        height: 100%;
         border: 2px solid black;
+
+        /* display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 45% 45% 10%;
+        grid-template-areas: "updates" "stats" "buttons"; */
 
         display: flex;
         flex-direction: column;
@@ -107,20 +126,27 @@ body {
 
     .updates-container {
         grid-area: updates;
-        background-color: rgba(0, 0, 0, 0.25);    
-        height: 45%;    
-}
+        background-color: rgba(0, 0, 0, 0.75);
+        color: white;
+        padding: 15px;
+        text-transform: none;
+        font-size: clamp(1rem, -2.0000rem + 8.0000vw, 1.5rem);    
+        height: 100%;
+        overflow: auto;
+        scroll-behavior: smooth;    
+
+    }
+
 
     .buttons-container {
         grid-area: buttons;
-        border: 2px solid black;
         height: 10%;
+        border: black 2px solid;
     }
 
     .player-stats-container {
         height: 45%;
         grid-area: stats;
-        border: 2px solid black;
 
         display: grid;
         grid-template-columns: 50% 50%;
@@ -128,6 +154,8 @@ body {
         justify-content: space-evenly;
         align-items: center;
         justify-items: center;
+        border: black 2px solid;
+
     }
 
         .player-stats-item {
@@ -136,12 +164,14 @@ body {
             align-items: center;
             justify-items: center;
             gap: 2px;
-            height: 50%
+            height: 50%;
+
 
         }
             .stats-image {
-                max-width: 100%;
-                height: 100%;    
+                max-width: 50%;
+                max-height: 100%;
+                min-height: 50%;    
                 padding: 3px
             }
 
@@ -209,7 +239,7 @@ body {
     .board-object-name {
         grid-area: 2/1/3/3;
         z-index: 3;
-        font-size: clamp(0.5rem, -0.1000rem + 1.6000vw, 1rem);
+        font-size: clamp(0.5em, -0.1000rem + 1.6000vw, .75em);
         overflow-wrap: break-word;
         color: whitesmoke;
         text-shadow: -1px 1px 0 #65818C,
