@@ -76,7 +76,45 @@ So far...
 
 
 
+// //monster - Name, Type, Attack, Defence, Row Location, Column Location
+// const monster1 = {
+//   name: `Ganon`,
+//   category: `monster`,
+//   atk: 20,
+//   maxLife: 5,
+//   lif: 5,
+//   def: 0,
+//   row: 5,
+//   col: 5,
+//   image: "/Assets/BotW_Dark_Beast_Ganon_Model.png"
+// }
 
+// //weapon - Name, Type, Attack, Row Location, Column Location
+// const sword1 = {
+//   name: `Great Frostblade`,
+//   category: `weapon`,
+//   atk: 1,
+//   row: 2,
+//   col: 3,
+//   image: "https://botw-compendium.herokuapp.com/api/v3/compendium/entry/great_frostblade/image"
+// }
+
+// const sword2 = {
+//   name: `Forest Dweller's Spear`,
+//   category: `weapon`,
+//   atk: 1,
+//   row: 4,
+//   col: 5,
+//   image: "https://botw-compendium.herokuapp.com/api/v3/compendium/entry/forest_dweller's_spear/image"
+// }
+
+// const sword3 = {
+//   name: `Soldier Spear`,
+//   category: `weapon`,
+//   atk: 1,
+//   row: 5,
+//   col: 4
+// }
 # R1 Prototype
 - Grid - 6x6
 - Single/fixed-stats objects
@@ -131,3 +169,11 @@ So far...
 
   <h1> Welcome to Zelda RPH </h1>
   <p></p>
+
+
+  START
+    turn=0
+
+  Click 
+    player
+    

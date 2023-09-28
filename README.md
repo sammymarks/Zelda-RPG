@@ -149,3 +149,7 @@ Game Over
 - Game over block
 - New Game button
 - 0.25 second delay for each monster/link movement
+
+
+# Assets
+- Shield Icon - https://commons.wikimedia.org/wiki/File:BotW_Weapon_Icon_BLACK.svg

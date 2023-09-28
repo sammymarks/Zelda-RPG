@@ -7,24 +7,18 @@
     height: 1px;
   }  */
 
-#game-log-text {
-    text-align: left;
-}
-
-/* #turn {
-     font-size: 2em;     
-} */
-
 html {
     background: url(https://images3.alphacoders.com/710/710798.jpg) no-repeat center center fixed; 
     background-size: cover;
-
 }
 
 @font-face {
     font-family: 'botw-caps';
     src: url(/Assets/TheWildBreathOfZelda-15Lv.ttf);
 }
+
+
+
 
 html {
     font-family: botw-caps;
@@ -59,40 +53,39 @@ html {
     "board right-screen";
 }
 
-/* #modal {
+#modal {
 	background-color: rgba(0,0,0,0.4);
 	position: fixed;
 	top: 0;
 	left: 0;
 	height: 100%;
 	width: 100%;
-	z-index: 1;
+	z-index: 100;
 	overflow: auto;
     display: block;
+}
 
-} */
-
-/* #modal-textbox {
+#modal-textbox {
     background-color: #FCFFE0;
-	width: 75%;
+	width: 80%;
     aspect-ratio: 16/10;
 	border-radius: 2px;
 	padding: 20px;
-    margin: 150px auto;
+    margin: 50px auto;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-    text-align: left;
+    text-align: left;    
+}
 
-    
-} */
-
-/* p, ul {
-    font-family: 'Times New Roman', Times, serif;
+p, ul {
+    font-family: Arial, Helvetica, sans-serif;
     text-transform: none;
 }
 
 .bold {
     font-weight: bold;
-} */
+    font-family: botw-caps;
+    text-transform: uppercase;
+}
 
     /* .game-over {
         grid-area: 1/1/7/7;
@@ -109,7 +102,7 @@ html {
     .right-screen-container {
         grid-area: right-screen;
         height: 100%;
-        border: 2px solid black;
+        /* border: 2px solid black; */
 
         /* display: grid;
         grid-template-columns: 100%;
@@ -130,18 +123,43 @@ html {
         color: white;
         padding: 15px;
         text-transform: none;
-        font-size: clamp(1rem, -2.0000rem + 8.0000vw, 1.5rem);    
         height: 100%;
         overflow: auto;
         scroll-behavior: smooth;    
 
     }
+    #game-log-text {
+        text-align: left;
+        font-size: clamp(0.5rem, -2.0000rem + 8.0000vw, 1rem);    
+        font-family:Arial, Helvetica, sans-serif;
+    }
+    
+    #botw-caps {
+        font-family: botw-caps;
+        text-transform: uppercase;     
+    }
 
+    #turn {
+         font-size: 1.5em;
+         font-family: botw-caps;     
+    }
+    
 
     .buttons-container {
         grid-area: buttons;
         height: 10%;
-        border: black 2px solid;
+        /* border: black 2px solid; */
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-items: center;
+    }
+
+    .main-button {
+        font-family: botw-caps;
+        text-transform: uppercase;
+        font-size: 1.5em;
+        background-color: #8c6c65;
     }
 
     .player-stats-container {
@@ -154,7 +172,11 @@ html {
         justify-content: space-evenly;
         align-items: center;
         justify-items: center;
-        border: black 2px solid;
+        background-color: #2095d434;
+        margin: 10px;
+        border-radius: 15%;
+        /* border: black 2px solid; */
+        color: white;
 
     }
 
@@ -218,6 +240,7 @@ html {
 
 
         background-color: rgb(137, 203, 137);
+        /* background: no-repeat center center fixed url(/Assets/sheika_icon.png); */
         border: 2px;
         border-style: solid;
         border-color: black;
@@ -299,9 +322,14 @@ html {
             1px 1px 0 white,
             1px -1px 0 white,
             -1px -1px 0 white;
-
     }
     
-     
+    #game-over-alert {
+        display: none;
+    }
+
+    #win-game-alert {
+        display: none;
+    }
     
 /* } */

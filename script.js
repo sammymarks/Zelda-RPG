@@ -183,7 +183,7 @@ const pullAPI = async () => {
     if (match = true) {
       monstersArray[i].maxLife = health
       monstersArray[i].lif = health
-      monstersArray[i].atk = 0.1*health
+      monstersArray[i].atk = Math.round(0.05*health)
       monstersArray[i].def = 0
     } else {
       monstersArray.splice(i,1)
@@ -204,12 +204,10 @@ const pullAPI = async () => {
 
 
   // console.log(compendiumAllItemsArray)
-  console.log(weaponsArray)
-  console.log(shieldsArray)
-  console.log(monstersArray)
+  // console.log(weaponsArray)
+  // console.log(shieldsArray)
+  // console.log(monstersArray)
 }
-
-pullAPI()
 
 //*****GAME OBJECTS AND VARIABLES*****
 
@@ -219,7 +217,9 @@ pullAPI()
   //Game Board
   let gameSquares = document.querySelectorAll(`.game-board-square`)
   // Grabbing About the Game button
-  const openBtn = document.getElementById('openModal');
+  const newGameBtn = document.getElementById('new-game-button')
+  
+  const instructionsBtn = document.getElementById('open-instructions');
 
   // Grabbing modal element
   const modal = document.getElementById('modal')
@@ -276,13 +276,18 @@ let playerTurnCount = 0
 
 //CHARACTERS AND ITEMS
 //placeholders
-let activeMonsters = []
-let activeWeapons = []
-let activeShields = []
+let monstersOrder = ['monster array works']
+
+// let monsterCounter = -1
+
+// let activeMonsters = []
+// let activeWeapons = []
+// let activeShields = []
 
 
 //player - Name, Type, Attack, Defence, Row Location, Column Location
-const player = {
+
+let player = {
   name: `Zelda`,
   category: `player`,
   atk: 2,
@@ -295,7 +300,7 @@ const player = {
 }
 
 //player - Name, Type, Attack, Defence, Row Location, Column Location
-const link = {
+let link = {
   name: `Link`,
   category: `link`,
   row: 3,
@@ -303,78 +308,22 @@ const link = {
   image: "/Assets/Link_Fishing.webp"
 }
 
-//monster - Name, Type, Attack, Defence, Row Location, Column Location
-const monster1 = {
-  name: `Ganon`,
-  category: `monster`,
-  atk: 20,
-  maxLife: 5,
-  lif: 5,
-  def: 0,
-  row: 5,
-  col: 5,
-  image: "/Assets/BotW_Dark_Beast_Ganon_Model.png"
-}
 
-//weapon - Name, Type, Attack, Row Location, Column Location
-const sword1 = {
-  name: `Great Frostblade`,
-  category: `weapon`,
-  atk: 1,
-  row: 2,
-  col: 3,
-  image: "https://botw-compendium.herokuapp.com/api/v3/compendium/entry/great_frostblade/image"
-}
-
-const sword2 = {
-  name: `Forest Dweller's Spear`,
-  category: `weapon`,
-  atk: 1,
-  row: 4,
-  col: 5,
-  image: "https://botw-compendium.herokuapp.com/api/v3/compendium/entry/forest_dweller's_spear/image"
-}
-
-const sword3 = {
-  name: `Soldier Spear`,
-  category: `weapon`,
-  atk: 1,
-  row: 5,
-  col: 4
-}
 
 //*****FUNCTIONS*****
 
+//***Layout and Rendering***
+
 //Game Over Modal
-const openModal = () => {
+function openModal () {
+  console.log(`openModal`)
   modal.style.display = 'block';
 }
 
-const closeModal = () => {
+function closeModal () {
+  console.log(`closeModal`)
   modal.style.display = 'none'
 }
-
-//https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
-function generateRandom (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min)
-}
-
-//Player Starting Location
-
-
-function updatePlayerStats () {
-  // console.log(`Update Player Stats`)
-  //Health
-  document.getElementById('life-stats').innerHTML = `${player.lif}/${player.maxLife}`
-  //Move Count
-  document.getElementById('move-count-stats').innerHTML = `${playerTurnCount}`
-  //Attack
-  document.getElementById('attack-stats').innerHTML = `${player.atk}`
-  //Defence
-  document.getElementById('defence-stats').innerHTML = `${player.def}`
-}
-
-//function setStartLocation () {}
 
 function renderObject (object, row, col) {
 
@@ -416,16 +365,59 @@ function renderObject (object, row, col) {
 
 
 
+//***Under the Hood***
 
+//https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
+function generateRandom (min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+//Player Starting Location
+//function setStartLocation () {}
+
+function resetPlayerStats () {
+  player.name=`Zelda`,
+  player.category=`player`,
+  player.atk=2,
+  player.maxLife=10,
+  player.lif=10,
+  player.def=1,
+  player.row=3,
+  player.col=3,
+  player.image="/Assets/TLoZ_Princess_Zelda_Sprite.png"
+}
+
+function updatePlayerStats () {
+  // console.log(`Update Player Stats`)
+  //Health
+  document.getElementById('life-stats').innerHTML = `${player.lif}/${player.maxLife}`
+  //Move Count
+  document.getElementById('move-count-stats').innerHTML = `${playerTurnCount}`
+  //Attack
+  document.getElementById('attack-stats').innerHTML = `${player.atk}`
+  //Defence
+  document.getElementById('defence-stats').innerHTML = `${player.def}`
+}
 
 function deleteObject (obj) {
+  // console.log(`DELETE ${obj.name}`)
   let objKey = `b${obj.row}${obj.col}`
   boardState[objKey].objectOnLoc = null
   obj.row = null
   obj.col = null
+  // console.log(boardState)
 }
 
-
+function deleteMonster (obj) {
+  console.log(`DELETE ${obj.name}`)
+  let objKey = `b${obj.row}${obj.col}`
+  boardState[objKey].objectOnLoc = null
+  obj.row = null
+  obj.col = null
+  console.log(boardState)
+  monstersOrder[obj.order]=""
+  console.log(monstersOrder)
+}
 
 //Is player move valid? Returns true/false
 function checkValidBoardMove (charRow,charCol,eventRow,eventCol) {
@@ -489,7 +481,8 @@ function executeValidMove (character, futureRow, futureColumn) {
 
   //Clear initial boardState and HTML
   boardState[currentBoardLoc].objectOnLoc = null
-  document.getElementById(`${currentRow}${currentCol}`).innerHTML = `[${currentRow}][${currentCol}]`
+  clearBoardLocation(currentRow,currentCol)
+  // document.getElementById(`${currentRow}${currentCol}`).innerHTML = `[${currentRow}][${currentCol}]`
   //Update character state
   character.row = futureRow
   character.col = futureColumn
@@ -509,14 +502,115 @@ function checkNewLocationObject (row, col) {
 
 //Consume Weapon
 function consumeWeapon (char, item) {
-  console.log(char)
-  console.log(item)
-  console.log(`Starting char atk: ${char.atk}`)
+  // console.log(char)
+  // console.log(item)
+  // console.log(`Starting char atk: ${char.atk}`)
   char.atk += item.atk
-  console.log(`Ending char atk: ${char.atk}`)
-  document.querySelector("#game-log-text").innerHTML += `${char.name} picked up a ${item.name} and gained ${item.atk} attack<br>`
+  // console.log(`Ending char atk: ${char.atk}`)
+  document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${char.name}</span> picked up a <span id="botw-caps">${item.name}</span> and gained <span id="botw-caps">${item.atk}</span> attack<br>`
   deleteObject(item)
 }
+
+//Consume Shield
+function consumeShield (char, item) {
+  // console.log(char)
+  // console.log(item)
+  // console.log(`Starting char def: ${char.def}`)
+  char.def += item.def
+  // console.log(`Ending char atk: ${char.def}`)
+  document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${char.name}</span> picked up a <span id="botw-caps">${item.name}</span> and gained <span id="botw-caps">${item.def}</span> defence<br>`
+  deleteObject(item)
+}
+
+function randomMonsterLocation () {
+  let emptySpaces = []
+  Object.keys(boardState).forEach(key => {
+    // console.log(boardState[key])
+    if ((boardState[key].objectOnLoc == null)||((boardState[key].objectOnLoc.category != 'player')&&(boardState[key].objectOnLoc.category != 'monsters')&&(boardState[key].objectOnLoc.category != 'link'))) {emptySpaces.push(key)}
+  })
+  // console.log(emptySpaces)
+
+  let location = new String()
+  emptySpaces.length>0 ? location=emptySpaces[generateRandom(0,(emptySpaces.length-1))] : location = null
+
+  return location
+  
+}
+
+function randomMonstersEquipment (monstersOrder) {
+  let randMonster = monstersArray[generateRandom(0,(monstersArray.length-1))]
+  let monsterKey = randomMonsterLocation()
+  if (monsterKey == null) {
+    document.querySelector("#game-log-text").innerHTML += `BOARD IS FULL. New Monster and Equipment cannot be placed<br>`
+    return
+  } 
+  // monsterCounter++
+  randMonster.row = monsterKey.charAt(1)
+  randMonster.col = monsterKey.charAt(2)
+  // randMonster.order = monsterCounter
+  objectStart(randMonster)
+  monstersOrder.push(randMonster)
+  // console.log(monstersOrder)
+
+  let randWeapon1 = weaponsArray[generateRandom(0,(weaponsArray.length-1))]
+  let randWeapon2 = weaponsArray[generateRandom(0,(weaponsArray.length-1))]
+  let randShield1 = shieldsArray[generateRandom(0,(shieldsArray.length-1))]
+  let randShield2 = shieldsArray[generateRandom(0,(shieldsArray.length-1))]
+  let equipmentOrder = [randWeapon1,randWeapon2,randShield1,randShield2]
+  let equipementLoc = getValidRandomMoves(randMonster.row,randMonster.col)
+
+  for (let i = 0; i<equipementLoc.length; i++) {
+    if (checkNewLocationObject(equipementLoc[i].charAt(0),equipementLoc[i].charAt(1))==null){
+      equipmentOrder[i].row = equipementLoc[i].charAt(0)
+      equipmentOrder[i].col = equipementLoc[i].charAt(1)
+      objectStart(equipmentOrder[i])  
+    }
+
+  }
+}
+
+function objectStart (newObject) {
+  // console.log(`objectStart ${newObject.name}`)
+  //Update boardState
+  let boardKey = `b${newObject.row}${newObject.col}`
+  //console.log(boardKey)
+  boardState[boardKey].objectOnLoc = newObject
+  //console.log(boardState[boardKey])
+  
+  renderObject(newObject, newObject.row, newObject.col)
+  updatePlayerStats()
+}
+
+function gameOver () {
+  console.log(`GAME OVER`)
+}
+
+function clearBoardLocation (row, col) {
+  document.getElementById(`${row}${col}`).innerHTML = ""
+}
+
+function newGame () {
+  //clear boardState
+  playerTurnCount = 0
+  monstersOrder = []
+  Object.values(boardState).forEach(square => {
+    square.objectOnLoc = null
+    clearBoardLocation(square.row,square.col)
+  })
+  resetPlayerStats()
+  updatePlayerStats()
+  objectStart(player)
+  randomMonstersEquipment(monstersOrder)
+  document.querySelector("#game-log-text").innerHTML = ``
+}
+
+//https://stackoverflow.com/questions/21518381/proper-way-to-wait-for-one-function-to-finish-before-continuing
+const initializeFirstLoad = async () => {
+  const result = await pullAPI()
+  console.log(`initialized`)
+  newGame()
+}
+//***Game Mechanics***
 
 //Combat involving player
 function playerCombat (attacker, defender) {
@@ -525,7 +619,7 @@ function playerCombat (attacker, defender) {
   console.log('Defender')
   console.log(defender)
   
-  document.querySelector("#game-log-text").innerHTML += `${attacker.name} attacks ${defender.name}!<br>`
+  document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${attacker.name}</span> attacks <span id="botw-caps">${defender.name}</span>!<br>`
 
 
   let round = 0
@@ -567,60 +661,64 @@ function playerCombat (attacker, defender) {
 
     //Update log
     if (attacker.category == "player") {
-      document.querySelector("#game-log-text").innerHTML += `${attacker.name} defeated ${defender.name} after ${round} ${round>1 ? `rounds` : `round`}<br>`
+      document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${attacker.name}</span> defeated <span id="botw-caps">${defender.name}</span> after <span id="botw-caps">${round}</span> ${round>1 ? `rounds` : `round`}<br>`
     } else {
-      document.querySelector("#game-log-text").innerHTML += `${defender.name} defeated ${attacker.name} after ${round} ${round>1 ? `rounds` : `round`}<br>`
+      document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${defender.name}</span> defeated <span id="botw-caps">${attacker.name}</span> after <span id="botw-caps">${round}</span> ${round>1 ? `rounds` : `round`}<br>`
     }
     
-    if ((pInitialAtk-player.atk)>0) {document.querySelector("#game-log-text").innerHTML += `${player.name}'s weapons breaks and loses ${pInitialAtk-player.atk} attack<br>`}
+    if ((pInitialAtk-player.atk)>0) {document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${player.name}'s</span> weapons breaks and loses <span id="botw-caps">${pInitialAtk-player.atk}</span> attack<br>`}
 
-    if ((pInitialDef-player.def)>0) {document.querySelector("#game-log-text").innerHTML += `${player.name}'s shield breaks and loses all defence<br>`}
+    if ((pInitialDef-player.def)>0) {document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${player.name}'s</span> shield breaks and loses <span id="botw-caps">all</span> defence<br>`}
+
+    updatePlayerStats()
 
     //Delete monster
-    attacker.category == `player` ? deleteObject(defender) : deleteObject(attacker)
+    attacker.category == `player` ? deleteMonster(defender) : deleteMonster(attacker)
   } else {
     if (defender.category == "player") {
-      document.querySelector("#game-log-text").innerHTML += `${attacker.name} defeated ${defender.name} after ${round} ${round>1 ? `rounds` : `round`}<br>`
+      document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${attacker.name}</span> defeated <span id="botw-caps">${defender.name}</span> after <span id="botw-caps">${round}</span> ${round>1 ? `rounds` : `round`}<br>`
     } else {
-      document.querySelector("#game-log-text").innerHTML += `${defender.name} defeated ${attacker.name} after ${round} ${round>1 ? `rounds` : `round`}<br>`
+      document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${defender.name}</span> defeated <span id="botw-caps">${attacker.name}</span> after <span id="botw-caps">${round}</span> ${round>1 ? `rounds` : `round`}<br>`
     }
   }
 }
 
-
-function monsterTurn () {
-  console.log(`MONSTER TURN`)
-  let possibleMoves = getValidRandomMoves(monster1.row, monster1.col)
-  //console.log(possibleMoves)
-  let randomMoveSelector = generateRandom(0,possibleMoves.length-1)
-  //console.log(randomMoveSelector)
-  let randomMove = possibleMoves[randomMoveSelector]
-  //console.log(randomMove)
-  let monsterMoveRow = parseInt(randomMove.charAt(0))
-  let monsterMoveCol = parseInt(randomMove.charAt(1))
-  let targetObject = checkNewLocationObject(monsterMoveRow,monsterMoveCol)
-  console.log(`Target Object`)
-  console.log(targetObject)
-  if (targetObject!=null) {
-    switch (targetObject.category) {
-      case `player`:
-        console.log(`MONSTER INITIATES COMBAT`)
-        playerCombat(monster1,player)
-        if (player.lif <1) {
-          executeValidMove(monster1,monsterMoveRow,monsterMoveCol)
-          gameOver()
-        }
-      break;
-      case `weapon`: 
-        consumeWeapon(monster1, targetObject)
-        executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
-      break;
-    } 
-  } else {
-    document.querySelector("#game-log-text").innerHTML += `${monster1.name} moves to an empty space<br>`
-    executeValidMove(monster1, randomMove.charAt(0), randomMove.charAt(1))  
-  }
-  updatePlayerStats()
+function monsterTurn (monsterObj) {
+    console.log(`${monsterObj.name}'s turn`)
+    let possibleMoves = getValidRandomMoves(monsterObj.row, monsterObj.col)
+    //console.log(possibleMoves)
+    let randomMoveSelector = generateRandom(0,possibleMoves.length-1)
+    //console.log(randomMoveSelector)
+    let randomMove = possibleMoves[randomMoveSelector]
+    //console.log(randomMove)
+    let monsterMoveRow = parseInt(randomMove.charAt(0))
+    let monsterMoveCol = parseInt(randomMove.charAt(1))
+    let targetObject = checkNewLocationObject(monsterMoveRow,monsterMoveCol)
+    // console.log(`Target Object`)
+    if (targetObject!=null) {
+      switch (targetObject.category) {
+        case `player`:
+          console.log(`MONSTER INITIATES COMBAT`)
+          playerCombat(monsterObj,player)
+          if (player.lif <1) {
+            executeValidMove(monsterObj,monsterMoveRow,monsterMoveCol)
+            gameOver()
+          }
+        break;
+        case `weapon`: 
+          consumeWeapon(monsterObj, targetObject)
+          executeValidMove(monsterObj, randomMove.charAt(0), randomMove.charAt(1))  
+        break;
+        case 'shield':
+          consumeShield(monsterObj,targetObject)
+          executeValidMove(monsterObj, randomMove.charAt(0), randomMove.charAt(1))  
+        break;
+      } 
+    } else {
+      document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${monsterObj.name}</span> moves to an empty space<br>`
+      executeValidMove(monsterObj, randomMove.charAt(0), randomMove.charAt(1))  
+    }
+    updatePlayerStats()
 }
 
 function playerTurn (moveRow, moveCol) {
@@ -629,123 +727,79 @@ function playerTurn (moveRow, moveCol) {
   if (validPlayerBoardMove == true) {
     
     playerTurnCount++
-    document.querySelector("#game-log-text").innerHTML = `<span id="turn">TURN ${playerTurnCount}\n<br>`
+    document.querySelector("#game-log-text").innerHTML = `<span id="turn">TURN ${playerTurnCount}</span>\n<br>`
 
     let moveLocationObject = checkNewLocationObject(moveRow,moveCol)
     if (moveLocationObject != null) {
       switch (moveLocationObject.category) {
-        case 'monster':
+        case 'monsters':
+          console.log(`Player initiates combat`)
           playerCombat(player, moveLocationObject)
         break;
         case 'weapon':
           consumeWeapon(player, moveLocationObject)
         break;
+        case 'shield':
+          consumeShield(player,moveLocationObject)
+        break;
       }
     } else {
-      document.querySelector("#game-log-text").innerHTML += `${player.name} moves to an empty space<br>`
+      document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${player.name}</span> moves to an empty space<br>`
+    }
+    if (player.lif < 1) {
+      gameOver()
     }
     executeValidMove(player, moveRow, moveCol)
     updatePlayerStats()
   }
 }
 
-function randomMonsterLocation () {
-  let emptySpaces = []
-  Object.keys(boardState).forEach(key => {
-    // console.log(boardState[key])
-    if ((boardState[key].objectOnLoc == null)||((boardState[key].objectOnLoc.category != 'player')&&(boardState[key].objectOnLoc.category != 'monsters')&&(boardState[key].objectOnLoc.category != 'link'))) {emptySpaces.push(key)}
-  })
-  // console.log(emptySpaces)
-
-  let location = new String()
-  emptySpaces.length>0 ? location=emptySpaces[generateRandom(0,(emptySpaces.length-1))] : location = null
-
-  return location
-  
-}
-
-function randomMonstersEquipment () {
-  let randMonster = monstersArray[generateRandom(0,(monstersArray.length-1))]
-  let monsterKey = randomMonsterLocation()
-  if (monsterKey == null) {
-    document.querySelector("#game-log-text").innerHTML += `BOARD IS FULL. New Monster and Equipment cannot be placed<br>`
-    return
-  } 
-  randMonster.row = monsterKey.charAt(1)
-  randMonster.col = monsterKey.charAt(2)
-  objectStart(randMonster)
-
-  let randWeapon1 = weaponsArray[generateRandom(0,(weaponsArray.length-1))]
-  let randWeapon2 = weaponsArray[generateRandom(0,(weaponsArray.length-1))]
-  let randShield1 = shieldsArray[generateRandom(0,(shieldsArray.length-1))]
-  let randShield2 = shieldsArray[generateRandom(0,(shieldsArray.length-1))]
-  let equipmentOrder = [randWeapon1,randShield1,randWeapon2,randShield2]
-  let equipementLoc = getValidRandomMoves(randMonster.row,randMonster.col)
-
-  for (let i = 0; i<equipementLoc.length; i++) {
-    if (checkNewLocationObject(equipementLoc[i].charAt(0),equipementLoc[i].charAt(1))==null){
-      equipmentOrder[i].row = equipementLoc[i].charAt(0)
-      equipmentOrder[i].col = equipementLoc[i].charAt(1)
-      objectStart(equipmentOrder[i])  
-    }
-
-  }
-
-
-  console.log(monsterKey)
-  console.log(equipementLoc)
-
-
-}
-
-
-function objectStart (newObject) {
-  // console.log(`objectStart ${newObject.name}`)
-  //Update boardState
-  let boardKey = `b${newObject.row}${newObject.col}`
-  //console.log(boardKey)
-  boardState[boardKey].objectOnLoc = newObject
-  //console.log(boardState[boardKey])
-  
-  renderObject(newObject, newObject.row, newObject.col)
-  updatePlayerStats()
-}
-
-function gameOver () {
-  console.log(`GAME OVER`)
-}
-
-function newGame () {
-  //clear boardState
-  Object.values(boardState).forEach(square => {
-    // console.log(square.objectOnLoc)
-    square.objectOnLoc = null
-  })
-  objectStart(player)
-  objectStart(monster1)
-  objectStart(sword1)
-  objectStart(sword2)
-  objectStart(sword3)
-}
 
 //*****GAMEPLAY*****
 
-newGame()
+
+
+initializeFirstLoad()
+
 
 //Begin Game Play with Player Turn
 gameSquares.forEach ((square) => {
   square.addEventListener(`click`, () => {
     //Get click location
-    randomMonstersEquipment()
+    
     let moveLocation = square.getAttribute(`id`)
     let moveRow = parseInt(moveLocation.charAt(0))
     let moveCol = parseInt(moveLocation.charAt(1))
+    console.log(`TURN ${playerTurnCount}`)
+    console.log('PLAYER TURN')
     playerTurn(moveRow, moveCol)
-    if ((playerTurnCount%2) == 0){monsterTurn()}
+    console.log(`monster count: ${monstersOrder.length}`)
+    console.log(monstersOrder)
+    if ((playerTurnCount%2) == 0){
+      console.log(`MONSTER LOOP`)
+      console.log(`monster count: ${monstersOrder.length}`)
+      //Monster Loop
+      monstersOrder.forEach((monstObj, index) => {
+        // console.log(monstersOrder)
+        monstObj.order = index
+        monsterTurn(monstObj)
+        if (monstObj.order == "") {monstersOrder.splice(index,1)}
+      })
+    }
+    if (playerTurnCount%40==0) {
+      randomMonstersEquipment(monstersOrder)
+    }
   })
 })
 
-//*****OTHER EVENT LISTENERS*****
-// openBtn.addEventListener('click', openModal)
+newGameBtn.addEventListener(`click`, () => {
+  newGame()
+})
 
-// close.addEventListener('click', closeModal)
+instructionsBtn.addEventListener(`click`, () => {
+  openModal()
+})
+
+close.addEventListener(`click`, () => {
+  closeModal()
+})
