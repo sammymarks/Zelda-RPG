@@ -35,12 +35,9 @@
     - Combat repeats until character health is <1
 
 # R2 Additional Mechanics
-- Single/fixed stats objects
+- Single/fixed stats objects and mechanics
   - Shield
   - Fairy
-- Mechanics
-  - Shield Consume/Break
-  - Fairy Consume consume/health increase
 - Logic
   - Link spawn on turn 100 + link logic
   - Random Monster spawn every 4 turns, surrounded by random equipment
@@ -49,6 +46,7 @@
   - Instructions Modal and Button, defaults to On
   - New Game button
   - Game over modal
+  - Different backgrounds/textures for different item types (especially monsters vs. player vs link)
 
 
 
@@ -58,6 +56,8 @@
   - Food
   - Treasure
   - Heart Container
+- Logic
+  - promise/timeout for loading API
 - Look and Feel
   - Status Box dynamic scrolling
   - 

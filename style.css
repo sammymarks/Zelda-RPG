@@ -242,10 +242,10 @@ html {
         font-size: clamp(0.5em, -0.1000rem + 1.6000vw, .75em);
         overflow-wrap: break-word;
         color: whitesmoke;
-        text-shadow: -1px 1px 0 #65818C,
-        1px 1px 0 #65818C,
-        1px -1px 0 #65818C,
-        -1px -1px 0 #65818C;
+        text-shadow: -2px 2px 0 #8c6c65,
+        2px 2px 0 #8c6c65,
+        2px -2px 0 #8c6c65,
+        -2px -2px 0 #8c6c65;
 
     }
 
@@ -265,14 +265,14 @@ html {
     .board-object-type {
         grid-area: 1/2/2/3;
         z-index: 3;
-        font-size: clamp(0.5rem, -0.1000rem + 1.6000vw, 1rem);
+        font-size: clamp(0.75rem, -0.1000rem + 1.6000vw, 1.25rem);
         overflow-wrap: break-word;
         font-weight: bold;
         padding: 1px;
-        text-shadow: -1px 1px 0 #65818C,
-            1px 1px 0 #65818C,
-            1px -1px 0 #65818C,
-            -1px -1px 0 #65818C;
+        text-shadow: -1px 1px 0 white,
+            1px 1px 0 white,
+            1px -1px 0 white,
+            -1px -1px 0 white;
     }
 
     .board-object-attack {
