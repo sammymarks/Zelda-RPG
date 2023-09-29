@@ -44,6 +44,23 @@
     - For and forEach loops on arrays and objects
     - If/Switch all over the place
 # Notable functions and functionality
+## Nested for maximum consistency and even formatting on dynamic HTML
+- **Screen Container**
+    - **Title Container**
+    - **Board Container**
+        - **Game Squares Container**
+            - Character Objects
+    - **Right Container**
+        - Updates Log
+        - **Stats Box Container**
+            - **4x Stats Containers**
+                - Icon
+                - Stat
+        - **Buttons Container**
+            - 2x Buttons
+
+
+
 ## gameSquares.forEach('click')
 - Logs the gamesquare location on the gameboard when the square is clicked, initiaties turn sequence
 ## playerTurn(clickedLocation)
