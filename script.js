@@ -278,6 +278,8 @@ const turnOrder = [`player`,`monsters`,`link`]
 let playerTurnCount = 0
 let linkInitialized = false
 let monstersOrder = ['monster array works']
+let activeGame = false
+let playerValidMove = false
 
 //player - Name, Type, Attack, Defence, Row Location, Column Location
 
@@ -400,16 +402,30 @@ function deleteObject (obj) {
   // console.log(boardState)
 }
 
-function deleteMonster (obj) {
+const deleteMonster = async (obj) => {
+  const result = await clearBoardLocation(attacker.row, attacker.col)
   console.log(`DELETE ${obj.name}`)
   let objKey = `b${obj.row}${obj.col}`
+  console.log(boardState)
   boardState[objKey].objectOnLoc = null
   obj.row = null
   obj.col = null
   console.log(boardState)
-  monstersOrder[obj.order]=""
-  console.log(monstersOrder)
+  obj.isAlive = false
+
 }
+
+// function deleteMonster (obj) {
+//   console.log(`DELETE ${obj.name}`)
+//   let objKey = `b${obj.row}${obj.col}`
+//   boardState[objKey].objectOnLoc = null
+//   obj.row = null
+//   obj.col = null
+//   console.log(boardState)
+//   obj.isAlive = false
+//   // monstersOrder[obj.order]=""
+//   // console.log(monstersOrder)
+// }
 
 //Is player move valid? Returns true/false
 function checkValidBoardMove (charRow,charCol,eventRow,eventCol) {
@@ -539,10 +555,13 @@ function randomMonstersEquipment (monstersOrder) {
   // monsterCounter++
   randMonster.row = monsterKey.charAt(1)
   randMonster.col = monsterKey.charAt(2)
+  randMonster.isAlive = true
+  if (randMonster.lif == 0) {randMonster.lif==1}
   // randMonster.order = monsterCounter
   objectStart(randMonster)
   monstersOrder.push(randMonster)
-  // console.log(monstersOrder)
+  document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${randMonster.name}</span> appears!<br>`
+  console.log(`${randMonster.name} APPEARED`)
 
   let randWeapon1 = weaponsArray[generateRandom(0,(weaponsArray.length-1))]
   let randWeapon2 = weaponsArray[generateRandom(0,(weaponsArray.length-1))]
@@ -562,13 +581,8 @@ function randomMonstersEquipment (monstersOrder) {
 }
 
 function objectStart (newObject) {
-  // console.log(`objectStart ${newObject.name}`)
-  //Update boardState
   let boardKey = `b${newObject.row}${newObject.col}`
-  //console.log(boardKey)
   boardState[boardKey].objectOnLoc = newObject
-  //console.log(boardState[boardKey])
-  
   renderObject(newObject, newObject.row, newObject.col)
   updatePlayerStats()
 }
@@ -592,6 +606,7 @@ function initializeLink () {
 }
 
 function gameOver () {
+  activeGame = false
   console.log(`GAME OVER`)
   gameOverAlert.style.display = 'block'
   document.querySelector("#game-log-text").innerHTML = `<span id="turn">Game Over</span><br><span id="botw-caps">Zelda</span> was defeated on turn <span id="botw-caps">${playerTurnCount}</span>. Maybe she'll have to wait another 100 years for <span id="botw-caps">Link</span> to show up.<br><br><span id="botw-caps">Play again?</span>`
@@ -599,6 +614,7 @@ function gameOver () {
 }
 
 function gameWin () {
+  activeGame = false
   console.log(`GAME WIN`)
   winGameAlert.style.display = 'block'
   document.querySelector("#game-log-text").innerHTML = `<span id="turn">You Won!</span><br><span id="botw-caps">Zelda</span> survived <span id="botw-caps">${playerTurnCount}</span> turns only to find <span id="botw-caps">Link</span> fishing.<br><br><span id="botw-caps">Play again?</span>`
@@ -610,6 +626,7 @@ function clearBoardLocation (row, col) {
 }
 
 function newGame () {
+  activeGame = true
   //clear boardState
   playerTurnCount = 0
   monstersOrder = []
@@ -636,6 +653,89 @@ const initializeFirstLoad = async () => {
 //***Game Mechanics***
 
 //Combat involving player
+
+function playerInitiatedCombat (attacker, defender) {
+  document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${attacker.name}</span> attacks <span id="botw-caps">${defender.name}</span>!<br>`
+  let round = 0
+  //Baseline Combat Stats
+  let aInitialLif = attacker.lif
+  let dInitialLif = defender.lif
+  let pInitialAtk = player.atk
+  let pInitialDef = player.def
+
+  while ((attacker.lif>0)&&(defender.lif>0)) {
+    round++
+    //Attacker attacks first; Defender loses life equal to attack value less defence
+    if ((attacker.atk - defender.def)>0) {
+      defender.lif -= (attacker.atk - defender.def)
+    }  
+    //If Defender survives; Attacker loses life equal to attack value less defence
+    if (defender.lif > 0) {
+      if ((defender.atk - attacker.def)>0) {
+        attacker.lif -= (defender.atk - attacker.def)
+      }
+    }
+  }
+  // If player wins, player loses shield, reduces attack, and monster is eliminated
+  if (player.lif>0) {
+    //Lose Shield
+    player.def = 0
+    //Lose attack equal to the monster's initial life
+    player.atk -= dInitialLif
+    if (player.atk <0) {player.atk = 0} 
+
+    //Update log
+    document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${attacker.name}</span> defeated <span id="botw-caps">${defender.name}</span> after <span id="botw-caps">${round}</span> ${round>1 ? `rounds` : `round`}<br>`
+    if ((pInitialAtk-player.atk)>0) {document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${player.name}'s</span> weapons breaks and loses <span id="botw-caps">${pInitialAtk-player.atk}</span> attack<br>`}
+    if ((pInitialDef-player.def)>0) {document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${player.name}'s</span> shield breaks and loses <span id="botw-caps">all</span> defence<br>`}
+
+    updatePlayerStats()
+    deleteMonster(defender)
+  }
+}
+
+function monsterInitiatedCombat (attacker, defender) {
+  document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${attacker.name}</span> attacks <span id="botw-caps">${defender.name}</span>!<br>`
+  let round = 0 
+  //Baseline Combat Stats
+  let aInitialLif = attacker.lif
+  let dInitialLif = defender.lif
+  let pInitialAtk = player.atk
+  let pInitialDef = player.def
+
+  //Start Combat
+  while ((attacker.lif>0)&&(defender.lif>0)) {
+    round++
+    //Attacker attacks first; Defender loses life equal to attack value less defence
+    if ((attacker.atk - defender.def)>0) {
+      defender.lif -= (attacker.atk - defender.def)
+    }  
+    //If Defender survives; Attacker loses life equal to attack value less defence
+    if (defender.lif > 0) {
+      if ((defender.atk - attacker.def)>0) {
+        attacker.lif -= (defender.atk - attacker.def)
+      }
+    }
+  }
+  // If player wins, player loses shield, reduces attack, and monster is eliminated
+  if (player.lif>0) {
+    //Lose Shield
+    player.def = 0
+    //Lose attack equal to the monster's initial life
+    player.atk -= aInitialLif
+    if (player.atk <0) {player.atk = 0} 
+    document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${defender.name}</span> defeated <span id="botw-caps">${attacker.name}</span> after <span id="botw-caps">${round}</span> ${round>1 ? `rounds` : `round`}<br>`
+    if ((pInitialAtk-player.atk)>0) {document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${player.name}'s</span> weapons breaks and loses <span id="botw-caps">${pInitialAtk-player.atk}</span> attack<br>`}
+    if ((pInitialDef-player.def)>0) {document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${player.name}'s</span> shield breaks and loses <span id="botw-caps">all</span> defence<br>`}
+
+    updatePlayerStats()
+    deleteMonster(attacker)
+  } else {
+    document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${attacker.name}</span> defeated <span id="botw-caps">${defender.name}</span> after <span id="botw-caps">${round}</span> ${round>1 ? `rounds` : `round`}<br>`
+  }
+}
+
+
 function playerCombat (attacker, defender) {
   console.log('Attacker')
   console.log(attacker)
@@ -751,8 +851,11 @@ function monsterTurn (monsterObj) {
 function playerTurn (moveRow, moveCol) {
 //Check valid player move
   let validPlayerBoardMove = checkValidBoardMove(player.row, player.col, moveRow, moveCol)
+  console.log(`Valid Board Move = ${validPlayerBoardMove}`)
+  console.log(`Valid Player Move = ${playerValidMove}`)
+
   if (validPlayerBoardMove == true) {
-    
+    playerValidMove = true
     playerTurnCount++
     document.querySelector("#game-log-text").innerHTML = `<span id="turn">TURN ${playerTurnCount}</span>\n<br>`
 
@@ -761,7 +864,7 @@ function playerTurn (moveRow, moveCol) {
       switch (moveLocationObject.category) {
         case 'monsters':
           console.log(`Player initiates combat`)
-          playerCombat(player, moveLocationObject)
+          playerInitiatedCombat(player, moveLocationObject)
         break;
         case 'weapon':
           consumeWeapon(player, moveLocationObject)
@@ -784,45 +887,44 @@ function playerTurn (moveRow, moveCol) {
   }
 }
 
-
 //*****GAMEPLAY*****
-
-
-
 initializeFirstLoad()
-
 
 //Begin Game Play with Player Turn
 gameSquares.forEach ((square) => {
   square.addEventListener(`click`, () => {
-    //Get click location
-    
-    let moveLocation = square.getAttribute(`id`)
-    let moveRow = parseInt(moveLocation.charAt(0))
-    let moveCol = parseInt(moveLocation.charAt(1))
-    console.log(`TURN ${playerTurnCount}`)
-    console.log('PLAYER TURN')
-    playerTurn(moveRow, moveCol)
-    console.log(`monster count: ${monstersOrder.length}`)
-    console.log(monstersOrder)
-    if ((playerTurnCount%2) == 0){
-      console.log(`MONSTER LOOP`)
-      console.log(`monster count: ${monstersOrder.length}`)
-      //Monster Loop
-      monstersOrder.forEach((monstObj, index) => {
-        // console.log(monstersOrder)
-        monstObj.order = index
-        monsterTurn(monstObj)
-        if (monstObj.order == "") {monstersOrder.splice(index,1)}
-      })
-    }
-    if (playerTurnCount == 10) {initializeLink()}
-    if (linkInitialized == true) {
-      // linkTurn()
-    }
-    if (playerTurnCount%40==0) {
-      randomMonstersEquipment(monstersOrder)
-    }
+      //Get click location, Run player turn
+      if (activeGame==true) {
+        let moveLocation = square.getAttribute(`id`)
+        let moveRow = parseInt(moveLocation.charAt(0))
+        let moveCol = parseInt(moveLocation.charAt(1))
+        console.log(`TURN ${playerTurnCount}`)
+        console.log('PLAYER TURN')
+        playerTurn(moveRow, moveCol)
+      }
+      //If valie player move, run the remainder of the loop
+      console.log(`Valid Player Move = ${playerValidMove}`)
+      if (playerValidMove==true) {
+        if (activeGame==true) {
+          if ((playerTurnCount%2) == 0){
+            console.log(`MONSTER LOOP - playerTurnCount = ${playerTurnCount}`)
+            monstersOrder.forEach((monstObj) => {
+              if (monstObj.isAlive == true) {monsterTurn(monstObj)} 
+            })
+          }
+        }
+        if (activeGame==true) {
+          if (playerTurnCount == 30) {initializeLink()}
+          if (linkInitialized == true) {
+            // linkTurn()
+          }
+        }
+        if (activeGame==true) {
+          if (playerTurnCount%5==0) {
+            randomMonstersEquipment(monstersOrder)
+          }
+        }
+      }
   })
 })
 

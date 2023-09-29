@@ -3,20 +3,28 @@ Link is lost! Can Zelda find him?
 
 This is a turn-based RPG on a grid with similar movement and item consumption as Chips Challege (https://youtu.be/ksT5z2gqPfw?feature=shared).
 Zelda must survive through (X) turns, picking up equipment and health and fighting monsters until she finds Link
-Spoiler alert - Link is probably cooking dubious food...
+Spoiler alert - Link is probably fishing...
 
 ## Notes for Instructors
+### Wireframe
 - Wireframe is linked here - https://www.figma.com/file/geqIZi5mkhqDo2gb4dLLIH/Project1-Zelda-RPG?type=design&node-id=0%3A1&mode=design&t=LrtLseEgFMMQfqJ7-1
-- Expected challenges:
-  - This has a lot of requirements... I may have to scale back MVP (see: prototype release in BuildPlan.md)
-  - A lot of moving pieces (literally and figuratively) need a scalable way to manage asset and element names/classes/ids
-  - Styling is hard, and I want to do this right!
-  - API data set is not great - may need to hand-pick a subset of objects manually OR commit to randomness that takes away from "immersion"
+### Other Notes
+- Still working through some bugs, including monsters not disappearing after combat and combat-related time-outs
+- Full README includes unrleased functionality.
 
 ## Credits
-- API...
+### Assets
+- API: https://gadhagod.github.io/Hyrule-Compendium-API/#/
+- Monster Health: https://gist.github.com/m-byte918/1d1acc569ad1cd59ead8e151fddf4591#file-botw_enemy_health
+  //https://docs.google.com/spreadsheets/d/1V9MjzX3pUkMvmesItZyZOj2qlbLx4J6NF0ztmvV_g1c/edit#gid=334445825
 - Background Image: https://zelda.nintendo.com/breath-of-the-wild/media/
-- Enemy Health...
+- Other icons and images: https://zelda.fandom.com/wiki/Main_Page
+
+### Coding Help
+- JS Async Await: https://stackoverflow.com/questions/21518381/proper-way-to-wait-for-one-function-to-finish-before-continuing
+- CSS Grid: https://css-tricks.com/snippets/css/complete-guide-grid/
+- JS Generate Random - //https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
+
 
 ## Game Play
 - Turn based "RPG" where Zelda (main character) moves across a grid collecting items and fighting enemies until she finds Link
