@@ -227,6 +227,9 @@ const pullAPI = async () => {
   // Grabbing close button
   const close = document.getElementById('close')
 
+  const winGameAlert = document.getElementById('win-game-alert')
+  const gameOverAlert = document.getElementById('game-over-alert')
+
 //Board State
 
 const boardState = {
@@ -273,17 +276,8 @@ const turnOrder = [`player`,`monsters`,`link`]
 
 //Player Turn Count
 let playerTurnCount = 0
-
-//CHARACTERS AND ITEMS
-//placeholders
+let linkInitialized = false
 let monstersOrder = ['monster array works']
-
-// let monsterCounter = -1
-
-// let activeMonsters = []
-// let activeWeapons = []
-// let activeShields = []
-
 
 //player - Name, Type, Attack, Defence, Row Location, Column Location
 
@@ -305,7 +299,7 @@ let link = {
   category: `link`,
   row: 3,
   col: 3,
-  image: "/Assets/Link_Fishing.webp"
+  image: "/Assets/Link_Fishing.jpeg"
 }
 
 
@@ -363,8 +357,6 @@ function renderObject (object, row, col) {
 
 }
 
-
-
 //***Under the Hood***
 
 //https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
@@ -372,18 +364,18 @@ function generateRandom (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-//Player Starting Location
-//function setStartLocation () {}
-
 function resetPlayerStats () {
+  // console.log(`RESET PLAYER STATS`)
+  let location = randomEmptyLocation()
+  // console.log(location)
   player.name=`Zelda`,
   player.category=`player`,
   player.atk=2,
   player.maxLife=10,
   player.lif=10,
   player.def=1,
-  player.row=3,
-  player.col=3,
+  player.row=parseInt(location.charAt(1)),
+  player.col=parseInt(location.charAt(2)),
   player.image="/Assets/TLoZ_Princess_Zelda_Sprite.png"
 }
 
@@ -522,7 +514,7 @@ function consumeShield (char, item) {
   deleteObject(item)
 }
 
-function randomMonsterLocation () {
+function randomEmptyLocation () {
   let emptySpaces = []
   Object.keys(boardState).forEach(key => {
     // console.log(boardState[key])
@@ -539,7 +531,7 @@ function randomMonsterLocation () {
 
 function randomMonstersEquipment (monstersOrder) {
   let randMonster = monstersArray[generateRandom(0,(monstersArray.length-1))]
-  let monsterKey = randomMonsterLocation()
+  let monsterKey = randomEmptyLocation()
   if (monsterKey == null) {
     document.querySelector("#game-log-text").innerHTML += `BOARD IS FULL. New Monster and Equipment cannot be placed<br>`
     return
@@ -581,8 +573,36 @@ function objectStart (newObject) {
   updatePlayerStats()
 }
 
+function initializeLink () {
+  linkInitialized = true
+  let location = randomEmptyLocation()
+  console.log(location)
+
+  link.name= `Link`
+  link.category= `link`
+  link.row = parseInt(location.charAt(1))
+  link.col = parseInt(location.charAt(2))
+  image= "/Assets/Link_Fishing.jpeg"
+  link.lif = '&#8734;'
+  link.atk = '&#8734;'
+  link.def = '&#8734;'
+
+  objectStart(link)
+  document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${link.name}</span> appeared! Turns out he was spending all his rupees fishing at the pond...<br>`
+}
+
 function gameOver () {
   console.log(`GAME OVER`)
+  gameOverAlert.style.display = 'block'
+  document.querySelector("#game-log-text").innerHTML = `<span id="turn">Game Over</span><br><span id="botw-caps">Zelda</span> was defeated on turn <span id="botw-caps">${playerTurnCount}</span>. Maybe she'll have to wait another 100 years for <span id="botw-caps">Link</span> to show up.<br><br><span id="botw-caps">Play again?</span>`
+
+}
+
+function gameWin () {
+  console.log(`GAME WIN`)
+  winGameAlert.style.display = 'block'
+  document.querySelector("#game-log-text").innerHTML = `<span id="turn">You Won!</span><br><span id="botw-caps">Zelda</span> survived <span id="botw-caps">${playerTurnCount}</span> turns only to find <span id="botw-caps">Link</span> fishing.<br><br><span id="botw-caps">Play again?</span>`
+
 }
 
 function clearBoardLocation (row, col) {
@@ -597,11 +617,14 @@ function newGame () {
     square.objectOnLoc = null
     clearBoardLocation(square.row,square.col)
   })
+  //Set Player
   resetPlayerStats()
   updatePlayerStats()
   objectStart(player)
   randomMonstersEquipment(monstersOrder)
   document.querySelector("#game-log-text").innerHTML = ``
+  gameOverAlert.style.display = 'none'
+  winGameAlert.style.display = 'none'
 }
 
 //https://stackoverflow.com/questions/21518381/proper-way-to-wait-for-one-function-to-finish-before-continuing
@@ -713,6 +736,10 @@ function monsterTurn (monsterObj) {
           consumeShield(monsterObj,targetObject)
           executeValidMove(monsterObj, randomMove.charAt(0), randomMove.charAt(1))  
         break;
+        case 'link':
+          document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${monsterObj.name}</span> attacked <span id="botw-caps">${link.name}</span>! That was ill advised...<br>`
+          deleteMonster(monsterObj)
+        break;
       } 
     } else {
       document.querySelector("#game-log-text").innerHTML += `<span id="botw-caps">${monsterObj.name}</span> moves to an empty space<br>`
@@ -741,6 +768,9 @@ function playerTurn (moveRow, moveCol) {
         break;
         case 'shield':
           consumeShield(player,moveLocationObject)
+        break;
+        case 'link':
+          gameWin()
         break;
       }
     } else {
@@ -785,6 +815,10 @@ gameSquares.forEach ((square) => {
         monsterTurn(monstObj)
         if (monstObj.order == "") {monstersOrder.splice(index,1)}
       })
+    }
+    if (playerTurnCount == 10) {initializeLink()}
+    if (linkInitialized == true) {
+      // linkTurn()
     }
     if (playerTurnCount%40==0) {
       randomMonstersEquipment(monstersOrder)

@@ -17,7 +17,7 @@
               <a id="close" href="#">Close</a>
               <h1>Welcome to Zelda RPG</h1>
               <h2>Link is lost!</h2>
-              <p>Zelda must find Link before the monsters get him. Link cannot cry for help, so Zelda must go on her own. What is he even good for besides fishing?</p>
+              <p>Zelda must find Link before the monsters get him. Link cannot cry for help, so Zelda must go on her own.</p>
               <h2>Game Play</h2>
               <p><span class="bold">Overview | </span>This is point-and-click turn-based game. You are Zelda, and have to survive until you find Link. You will fight monsters and collect items on the way! </p>
               <p><span class="bold">Zelda | </span>Zelda has health, max life, attack, and defence. All of her stats can change from fighting monsters or picking up items. Zelda can move to an adjacent square (up, down, left right) by clicking on the square. Zelda will consume items or fight monsters on the square she moves to.</p>
@@ -41,6 +41,14 @@
             <h1>Zelda RPG</h1>
         </div>
         <div class="screen-item game-board-container">
+            <div class="game-condition-alert" id="game-over-alert">
+                <!-- <a id="GO-close" href="#">Close</a> -->
+                <h1>Game Over</h1>
+            </div>
+            <div class="game-condition-alert" id="win-game-alert">
+                <!-- <a id="GW-close" href="#">Close</a> -->
+                <h1>Game Over</h1>
+            </div>
             <div class="game-board-square" id="00">[0][0]</div>
             <div class="game-board-square" id="01">[0][1]</div>
             <div class="game-board-square" id="02">[0][2]</div>
@@ -80,7 +88,7 @@
         </div>
         <div class="screen-item right-screen-container">
             <div class="screen-item updates-container" id="scroller">
-                <p id="game-log-text"><span id="turn">TURN 0</span><br></p>
+                <p id="game-log-text"><span id="turn">Zelda sets off!</span><br></p>
                 <div id="anchor"></div>
             </div>
             <div class="screen-item player-stats-container">
